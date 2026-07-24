@@ -31,8 +31,9 @@ export async function parseDeckFile(file: File): Promise<ParsedDeck> {
 }
 
 export function parseDeckText(text: string): ParsedDeck {
+  const normalizedText = text.replace(/\r\n/g, '\n')
   const warnings: string[] = []
-  const { data, content } = parseFrontmatter(text)
+  const { data, content } = parseFrontmatter(normalizedText)
 
   if (!data['title']) {
     warnings.push('Título não encontrado no frontmatter. Usando nome padrão.')
