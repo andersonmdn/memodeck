@@ -81,7 +81,7 @@ export function DeckCard({ deck }: DeckCardProps) {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-7 w-7 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="h-7 w-7 flex-shrink-0 opacity-50 hover:opacity-100 transition-opacity"
                   >
                     <MoreHorizontal className="h-4 w-4" />
                   </Button>

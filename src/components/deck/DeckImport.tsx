@@ -23,6 +23,14 @@ export function DeckImport({ onImported }: { onImported?: () => void }) {
         setState({ status: 'error', message: 'Formato inválido. Use arquivos .md ou .deck.md' })
         return
       }
+      const text = await file.text()
+      if (!/\{\{c\d+::/.test(text)) {
+        setState({
+          status: 'error',
+          message: 'Nenhum cartão encontrado. Use a sintaxe {{c1::resposta}} para criar cartões.',
+        })
+        return
+      }
       setState({ status: 'loading' })
       const result = await importFile(file)
       if (result.ok) {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Maximize2, Minimize2, CheckCircle2, RotateCcw } from 'lucide-react'
+import { X, Maximize2, Minimize2, CheckCircle2, RotateCcw, Flame } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   AlertDialog,
@@ -20,16 +20,47 @@ import { useStudySession } from '@/hooks/useStudySession'
 import { useKeyboard } from '@/hooks/useKeyboard'
 import { getDeckById } from '@/storage/deckStore'
 import { cn } from '@/utils/cn'
+import { useGlobalStats } from '@/hooks/useStats'
 import type { Deck } from '@/models/Deck'
 import type { Rating } from '@/models/Card'
 import { calculateRetention } from '@/study/session'
 
+const CONFETTI = Array.from({ length: 10 }, (_, i) => ({
+  angle: (i / 10) * 360,
+  color: ['#6366f1', '#22c55e', '#f59e0b', '#ec4899', '#3b82f6'][i % 5],
+  distance: 60 + (i % 3) * 20,
+}))
+
+function ConfettiBurst() {
+  return (
+    <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
+      {CONFETTI.map((p, i) => (
+        <motion.div
+          key={i}
+          className="absolute h-2 w-2 rounded-full"
+          style={{ backgroundColor: p.color }}
+          initial={{ x: 0, y: 0, scale: 0, opacity: 1 }}
+          animate={{
+            x: Math.cos((p.angle * Math.PI) / 180) * p.distance,
+            y: Math.sin((p.angle * Math.PI) / 180) * p.distance,
+            scale: [0, 1.5, 0],
+            opacity: [1, 1, 0],
+          }}
+          transition={{ duration: 0.9, ease: 'easeOut', delay: 0.15 }}
+        />
+      ))}
+    </div>
+  )
+}
+
 export function StudyPage() {
   const { deckId } = useParams<{ deckId: string }>()
   const navigate = useNavigate()
+  const isAllDecks = deckId === 'all'
   const [deck, setDeck] = useState<Deck | null>(null)
   const [fullscreen, setFullscreen] = useState(false)
   const [exitDialogOpen, setExitDialogOpen] = useState(false)
+  const { streak } = useGlobalStats()
   const {
     currentCard,
     currentIndex,
@@ -43,12 +74,14 @@ export function StudyPage() {
   } = useStudySession(deckId ?? '')
 
   useEffect(() => {
-    if (!deckId) return
+    if (!deckId || isAllDecks) return
     getDeckById(deckId).then((d) => {
       if (d) setDeck(d)
       else navigate('/library')
     })
-  }, [deckId, navigate])
+  }, [deckId, isAllDecks, navigate])
+
+  const deckTitle = isAllDecks ? 'Todas as revisões' : deck?.title ?? ''
 
   useEffect(() => {
     start()
@@ -77,7 +110,7 @@ export function StudyPage() {
     F: () => setFullscreen((v) => !v),
   })
 
-  if (!deck) return null
+  if (!isAllDecks && !deck) return null
 
   if (totalCards === 0) {
     return (
@@ -85,7 +118,9 @@ export function StudyPage() {
         <CheckCircle2 className="h-12 w-12 text-[--color-success]" />
         <h2 className="text-xl font-semibold text-[--color-text]">Tudo em dia!</h2>
         <p className="text-sm text-[--color-text-muted]">
-          Nenhum cartão para revisar agora em "{deck.title}".
+          {isAllDecks
+            ? 'Nenhum cartão para revisar agora.'
+            : `Nenhum cartão para revisar agora em "${deckTitle}".`}
         </p>
         <Button onClick={() => navigate(-1)}>Voltar à biblioteca</Button>
       </div>
@@ -99,14 +134,15 @@ export function StudyPage() {
       <motion.div
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="flex h-screen flex-col items-center justify-center gap-6 bg-[--color-background] p-8"
+        className="relative flex h-screen flex-col items-center justify-center gap-6 bg-[--color-background] p-8"
       >
+        <ConfettiBurst />
         <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[--color-success]/20">
           <CheckCircle2 className="h-8 w-8 text-[--color-success]" />
         </div>
         <div className="text-center">
           <h2 className="text-2xl font-bold text-[--color-text]">Sessão concluída!</h2>
-          <p className="mt-1 text-sm text-[--color-text-muted]">{deck.title}</p>
+          <p className="mt-1 text-sm text-[--color-text-muted]">{deckTitle}</p>
         </div>
         <div className="grid grid-cols-3 gap-6 text-center">
           <div>
@@ -122,11 +158,22 @@ export function StudyPage() {
             <p className="text-xs text-[--color-text-subtle] mt-1">Retenção</p>
           </div>
         </div>
+        {streak > 0 && (
+          <div className="flex items-center gap-1.5 text-orange-400">
+            <Flame className="h-4 w-4" />
+            <span className="text-sm font-semibold">{streak}d de sequência</span>
+          </div>
+        )}
         <div className="flex gap-3">
           <Button variant="secondary" onClick={start}>
             <RotateCcw className="h-4 w-4" /> Repetir
           </Button>
-          <Button onClick={() => navigate(-1)}>Voltar à biblioteca</Button>
+          <motion.div
+            animate={{ scale: [1, 1.04, 1] }}
+            transition={{ delay: 1.2, duration: 0.5, ease: 'easeInOut' }}
+          >
+            <Button onClick={() => navigate(-1)}>Voltar à biblioteca</Button>
+          </motion.div>
         </div>
       </motion.div>
     )
@@ -141,7 +188,7 @@ export function StudyPage() {
             <X className="h-4 w-4" />
           </Button>
           <div className="flex-1">
-            <p className="text-sm font-medium text-[--color-text] truncate">{deck.title}</p>
+            <p className="text-sm font-medium text-[--color-text] truncate">{deckTitle}</p>
             <StudyProgress current={currentIndex} total={totalCards} />
           </div>
           <Button variant="ghost" size="icon" onClick={() => setFullscreen((v) => !v)}>
@@ -160,7 +207,7 @@ export function StudyPage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -12 }}
                   transition={{ duration: 0.2 }}
-                  className="rounded-xl border border-[--color-border-subtle] bg-[--color-surface] p-8"
+                  className="rounded-xl border border-[--color-border-subtle] bg-[--color-surface] p-10"
                 >
                   <ClozeText
                     rawText={currentCard.rawText}
@@ -187,9 +234,7 @@ export function StudyPage() {
 
             {/* Keyboard hint */}
             <p className="mt-4 text-center text-xs text-[--color-text-subtle]">
-              {revealed
-                ? 'Teclas 1–4 para avaliar • Esc para sair'
-                : 'Espaço para revelar • Esc para sair'}
+              {revealed ? 'Esc para sair' : 'Espaço para revelar • Esc para sair'}
             </p>
           </div>
         </div>

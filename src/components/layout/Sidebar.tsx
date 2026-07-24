@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router'
-import { LayoutDashboard, Library, BarChart2, Settings, BookOpen, Layers, Sparkles } from 'lucide-react'
+import { LayoutDashboard, Library, BarChart2, Settings, HardDrive, Layers, Sparkles } from 'lucide-react'
 import { cn } from '@/utils/cn'
 
 interface NavItem {
@@ -12,7 +12,7 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { to: '/', icon: LayoutDashboard, label: 'Dashboard', end: true },
+  { to: '/', icon: LayoutDashboard, label: 'Início', end: true },
   { to: '/library', icon: Library, label: 'Biblioteca' },
   { to: '/ai-prompt', icon: Sparkles, label: 'Criar com IA', newFeature: true },
   { to: '/stats', icon: BarChart2, label: 'Estatísticas' },
@@ -72,7 +72,7 @@ export function Sidebar() {
       {/* Bottom hint */}
       <div className="mt-4 rounded-lg border border-[--color-border-subtle] bg-[--color-background] p-3">
         <div className="flex items-center gap-2 text-xs text-[--color-text-subtle]">
-          <BookOpen className="h-3.5 w-3.5 flex-shrink-0" />
+          <HardDrive className="h-3.5 w-3.5 flex-shrink-0" />
           <span>Dados salvos localmente</span>
         </div>
       </div>

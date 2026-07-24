@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router'
 import { motion } from 'framer-motion'
-import { Bot, Copy, CheckCircle, Info, Sparkles } from 'lucide-react'
+import { Bot, Copy, CheckCircle, Info, Sparkles, Library } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 
@@ -125,6 +126,7 @@ Com base na documentação fornecida a seguir, gere um arquivo \`.deck.md\` comp
 seguindo todas as regras acima. Retorne apenas o conteúdo do arquivo, sem explicações.`
 
 export function AIPromptPage() {
+  const navigate = useNavigate()
   const [copied, setCopied] = useState(false)
   const [isNew, setIsNew] = useState(false)
 
@@ -146,10 +148,10 @@ export function AIPromptPage() {
       <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
         <div className="flex items-center gap-2.5 mb-1">
           <Bot className="h-6 w-6 text-[--color-accent]" />
-          <h1 className="text-2xl font-bold text-[--color-text]">Prompt para IA</h1>
+          <h1 className="text-2xl font-bold text-[--color-text]">Criar com IA</h1>
         </div>
         <p className="text-sm text-[--color-text-muted]">
-          Copie o prompt abaixo, cole na sua IA favorita e forneça a documentação que quiser transformar em flashcards.
+          Copie o prompt, cole em qualquer IA com o conteúdo que quer estudar, salve o resultado e importe na Biblioteca.
         </p>
       </motion.div>
 
@@ -166,10 +168,17 @@ export function AIPromptPage() {
                 <li>Copie o prompt abaixo</li>
                 <li>Cole em qualquer IA (ChatGPT, Claude, Gemini…)</li>
                 <li>Adicione a documentação ou texto que deseja transformar em cartões</li>
-                <li>Salve o resultado como <code className="text-xs bg-[--color-surface-2] px-1 py-0.5 rounded">nome.deck.md</code> e importe na Biblioteca</li>
+                <li>Salve o resultado como <code className="text-xs bg-[--color-surface-2] px-1 py-0.5 rounded">nome.deck.md</code></li>
+                <li>Importe o arquivo na Biblioteca</li>
               </ol>
             </CardDescription>
           </CardHeader>
+          <CardContent className="pt-0 pb-4">
+            <Button variant="secondary" size="sm" onClick={() => navigate('/library')}>
+              <Library className="h-4 w-4" />
+              Ir para a Biblioteca
+            </Button>
+          </CardContent>
         </Card>
 
         {/* Prompt */}
@@ -179,9 +188,6 @@ export function AIPromptPage() {
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
                   <CardTitle className="text-sm">Prompt</CardTitle>
-                  <span className="inline-flex items-center rounded-full border border-[--color-border-subtle] px-2 py-0.5 text-[10px] font-medium text-[--color-text-muted]">
-                    v{PROMPT_VERSION}
-                  </span>
                   {isNew && (
                     <motion.span
                       initial={{ opacity: 0, scale: 0.8 }}

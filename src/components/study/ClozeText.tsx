@@ -15,7 +15,7 @@ export function ClozeText({ rawText, clozeIndex, revealed }: ClozeTextProps) {
 
   return (
     <div
-      className="prose text-base leading-relaxed"
+      className="prose text-lg leading-relaxed"
       dangerouslySetInnerHTML={{ __html: html }}
     />
   )
