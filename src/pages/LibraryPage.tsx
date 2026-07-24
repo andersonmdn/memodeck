@@ -114,7 +114,9 @@ export function LibraryPage() {
           className="mb-8"
         >
           <div className="mb-3 flex items-center gap-2">
-            <Heart className="h-4 w-4 text-rose-400" />
+            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-rose-500/15">
+              <Heart className="h-3.5 w-3.5 text-rose-400" />
+            </div>
             <h2 className="text-sm font-semibold text-[--color-text]">Favoritos</h2>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

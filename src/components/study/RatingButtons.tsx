@@ -2,10 +2,10 @@ import { motion } from 'framer-motion'
 import type { Rating } from '@/models/Card'
 
 const RATINGS: { value: Rating; label: string; description: string; color: string; key: string }[] = [
-  { value: 1, label: 'Errei', description: 'Não lembrei', color: 'bg-red-500/10 border-red-500/30 text-red-400 hover:bg-red-500/20', key: '1' },
-  { value: 2, label: 'Difícil', description: 'Com esforço', color: 'bg-orange-500/10 border-orange-500/30 text-orange-400 hover:bg-orange-500/20', key: '2' },
-  { value: 3, label: 'Bom', description: 'Lembrei', color: 'bg-blue-500/10 border-blue-500/30 text-blue-400 hover:bg-blue-500/20', key: '3' },
-  { value: 4, label: 'Fácil', description: 'Sem dúvida', color: 'bg-green-500/10 border-green-500/30 text-green-400 hover:bg-green-500/20', key: '4' },
+  { value: 1, label: 'Errei', description: 'Não lembrei', color: 'bg-red-500/15 border-red-500/40 text-red-400 hover:bg-red-500/25 focus-visible:ring-red-500/60', key: '1' },
+  { value: 2, label: 'Difícil', description: 'Com esforço', color: 'bg-orange-500/15 border-orange-500/40 text-orange-400 hover:bg-orange-500/25 focus-visible:ring-orange-500/60', key: '2' },
+  { value: 3, label: 'Bom', description: 'Lembrei', color: 'bg-blue-500/15 border-blue-500/40 text-blue-400 hover:bg-blue-500/25 focus-visible:ring-blue-500/60', key: '3' },
+  { value: 4, label: 'Fácil', description: 'Sem dúvida', color: 'bg-green-500/15 border-green-500/40 text-green-400 hover:bg-green-500/25 focus-visible:ring-green-500/60', key: '4' },
 ]
 
 interface RatingButtonsProps {
@@ -24,13 +24,11 @@ export function RatingButtons({ onRate }: RatingButtonsProps) {
         <button
           key={value}
           onClick={() => onRate(value)}
-          className={`flex flex-col items-center gap-1 rounded-lg border p-3 text-center transition-all duration-150 cursor-pointer ${color}`}
+          className={`flex flex-col items-center gap-1.5 rounded-lg border p-3 text-center transition-all duration-150 cursor-pointer active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[--color-background] ${color}`}
         >
-          <div className="flex items-center gap-1">
-            <span className="text-xs font-mono opacity-60">[{key}]</span>
-          </div>
-          <span className="text-sm font-semibold">{label}</span>
-          <span className="text-xs opacity-70">{description}</span>
+          <span className="text-sm font-semibold leading-tight">{label}</span>
+          <span className="text-xs opacity-70 leading-tight">{description}</span>
+          <kbd className="mt-0.5 rounded border border-white/15 bg-white/10 px-1.5 py-0.5 text-[10px] font-sans opacity-60">{key}</kbd>
         </button>
       ))}
     </motion.div>

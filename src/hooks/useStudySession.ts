@@ -1,15 +1,10 @@
 import { useState, useCallback, useRef } from 'react'
-import { useLiveQuery } from 'dexie-react-hooks'
 import { getCardsByDeckId } from '@/storage/deckStore'
 import { recordReview, getDueCards, getAllDueCards } from '@/storage/progressStore'
 import { buildStudyQueue } from '@/study/session'
 import type { Card, Rating } from '@/models/Card'
 
 export function useStudySession(deckId: string, batchSize = 20) {
-  const allCards: Card[] = useLiveQuery(
-    () => deckId === 'all' ? Promise.resolve([]) : getCardsByDeckId(deckId),
-    [deckId],
-  ) ?? []
   const [queue, setQueue] = useState<Card[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [revealed, setRevealed] = useState(false)
@@ -20,7 +15,8 @@ export function useStudySession(deckId: string, batchSize = 20) {
 
   const start = useCallback(async () => {
     const due = deckId === 'all' ? await getAllDueCards() : await getDueCards(deckId)
-    const newCards = deckId === 'all' ? [] : allCards.filter((c) => c.state === 'new')
+    const freshCards = deckId === 'all' ? [] : await getCardsByDeckId(deckId)
+    const newCards = freshCards.filter((c) => c.state === 'new')
     const q = buildStudyQueue([...due, ...newCards], batchSize)
     setQueue(q)
     setCurrentIndex(0)
@@ -29,7 +25,7 @@ export function useStudySession(deckId: string, batchSize = 20) {
     setRatings([])
     startTime.current = Date.now()
     cardStartTime.current = Date.now()
-  }, [deckId, allCards, batchSize])
+  }, [deckId, batchSize])
 
   const showAnswer = useCallback(() => {
     setRevealed(true)

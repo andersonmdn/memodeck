@@ -84,8 +84,8 @@ export function DeckImport({ onImported }: { onImported?: () => void }) {
         className={cn(
           'relative flex cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed p-10 transition-all duration-200',
           dragOver
-            ? 'border-[--color-accent] bg-[--color-accent]/5'
-            : 'border-[--color-border] hover:border-[--color-border] hover:bg-[--color-surface-2]/50',
+            ? 'border-[--color-accent] bg-[--color-accent]/8'
+            : 'border-[--color-border] hover:border-[--color-accent]/40 hover:bg-[--color-accent]/5',
         )}
       >
         <div className={cn(

@@ -147,7 +147,9 @@ export function AIPromptPage() {
     <div className="p-8 max-w-2xl mx-auto">
       <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
         <div className="flex items-center gap-2.5 mb-1">
-          <Bot className="h-6 w-6 text-[--color-accent]" />
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[--color-accent]/15">
+            <Bot className="h-5 w-5 text-[--color-accent]" />
+          </div>
           <h1 className="text-2xl font-bold text-[--color-text]">Criar com IA</h1>
         </div>
         <p className="text-sm text-[--color-text-muted]">
@@ -160,7 +162,9 @@ export function AIPromptPage() {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <Info className="h-4 w-4 text-[--color-accent]" />
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[--color-accent]/15">
+                <Info className="h-3.5 w-3.5 text-[--color-accent]" />
+              </div>
               <CardTitle className="text-sm">Como usar</CardTitle>
             </div>
             <CardDescription>

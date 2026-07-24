@@ -58,11 +58,11 @@ export function StatsPage() {
         className="grid grid-cols-2 gap-4 sm:grid-cols-4 mb-8"
       >
         {[
-          { icon: Flame, label: 'Sequência', value: `${streak}d`, color: 'text-orange-400' },
-          { icon: BookOpen, label: 'Hoje', value: reviewedToday, color: 'text-blue-400' },
-          { icon: TrendingUp, label: 'Total', value: totalReviewed, color: 'text-[--color-accent]' },
-          { icon: BarChart2, label: 'Retenção', value: totalReviewed === 0 ? '–' : `${retention}%`, color: 'text-[--color-success]' },
-        ].map(({ icon: Icon, label, value, color }) => (
+          { icon: Flame, label: 'Sequência', value: `${streak}d`, color: 'text-orange-400', iconBg: 'bg-orange-500/10' },
+          { icon: BookOpen, label: 'Hoje', value: reviewedToday, color: 'text-blue-400', iconBg: 'bg-blue-500/10' },
+          { icon: TrendingUp, label: 'Total', value: totalReviewed, color: 'text-[--color-accent]', iconBg: 'bg-[--color-accent]/15' },
+          { icon: BarChart2, label: 'Retenção', value: totalReviewed === 0 ? '–' : `${retention}%`, color: 'text-[--color-success]', iconBg: 'bg-[--color-success]/10' },
+        ].map(({ icon: Icon, label, value, color, iconBg }) => (
           <Card key={label}>
             <CardContent className="p-5">
               <div className="flex items-center justify-between">
@@ -70,7 +70,9 @@ export function StatsPage() {
                   <p className="text-xs text-[--color-text-subtle] uppercase tracking-wider">{label}</p>
                   <p className={`mt-1 text-2xl font-bold ${color}`}>{value}</p>
                 </div>
-                <Icon className={`h-5 w-5 ${color} opacity-60`} />
+                <div className={`rounded-lg ${iconBg} p-2`}>
+                  <Icon className={`h-5 w-5 ${color}`} />
+                </div>
               </div>
             </CardContent>
           </Card>

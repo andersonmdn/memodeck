@@ -9,12 +9,13 @@ import { useDecks } from '@/hooks/useDeck'
 import { useGlobalStats } from '@/hooks/useStats'
 import { formatRelative } from '@/utils/dateUtils'
 
-function StatCard({ icon: Icon, label, value, sub, color = 'text-[--color-accent]' }: {
+function StatCard({ icon: Icon, label, value, sub, color = 'text-[--color-accent]', iconBg = 'bg-[--color-accent]/15' }: {
   icon: React.ElementType
   label: string
   value: string | number
   sub?: string
   color?: string
+  iconBg?: string
 }) {
   return (
     <Card>
@@ -25,7 +26,7 @@ function StatCard({ icon: Icon, label, value, sub, color = 'text-[--color-accent
             <p className={`mt-1.5 text-2xl font-bold ${color}`}>{value}</p>
             {sub && <p className="mt-0.5 text-xs text-[--color-text-subtle]">{sub}</p>}
           </div>
-          <div className="rounded-lg bg-[--color-surface-2] p-2.5">
+          <div className={`rounded-lg ${iconBg} p-2.5`}>
             <Icon className={`h-5 w-5 ${color}`} />
           </div>
         </div>
@@ -98,15 +99,16 @@ export function DashboardPage() {
             transition={{ delay: 0.05 }}
             className="grid grid-cols-2 gap-4 sm:grid-cols-4 mb-8"
           >
-            <StatCard icon={BookOpen} label="Devidos hoje" value={dueToday} sub="cartões para revisar" color="text-[--color-accent]" />
-            <StatCard icon={Clock} label="Revisados hoje" value={reviewedToday} color="text-blue-400" />
-            <StatCard icon={Flame} label="Sequência" value={`${streak}d`} sub="dias consecutivos" color="text-orange-400" />
+            <StatCard icon={BookOpen} label="Devidos hoje" value={dueToday} sub="cartões para revisar" color="text-[--color-accent]" iconBg="bg-[--color-accent]/15" />
+            <StatCard icon={Clock} label="Revisados hoje" value={reviewedToday} color="text-blue-400" iconBg="bg-blue-500/10" />
+            <StatCard icon={Flame} label="Sequência" value={`${streak}d`} sub="dias consecutivos" color="text-orange-400" iconBg="bg-orange-500/10" />
             <StatCard
               icon={TrendingUp}
               label="Retenção"
               value={totalReviewed === 0 ? '–' : `${retention}%`}
               sub={totalReviewed === 0 ? 'Estude para ver' : `${totalReviewed} revisões`}
               color="text-[--color-success]"
+              iconBg="bg-[--color-success]/10"
             />
           </motion.div>
 

@@ -82,7 +82,9 @@ export function SettingsPage() {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <Shield className="h-4 w-4 text-[--color-success]" />
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[--color-success]/15">
+                <Shield className="h-3.5 w-3.5 text-[--color-success]" />
+              </div>
               <CardTitle className="text-sm">Privacidade total</CardTitle>
             </div>
             <CardDescription>

@@ -28,7 +28,7 @@ export function Sidebar() {
     <aside className="flex h-screen w-56 flex-col border-r border-[--color-border-subtle] bg-[--color-surface] px-3 py-4">
       {/* Logo */}
       <div className="mb-6 flex items-center gap-2.5 px-2">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[--color-accent]">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[--color-accent] shadow-lg shadow-indigo-500/30">
           <Layers className="h-4 w-4 text-white" />
         </div>
         <span className="text-base font-semibold tracking-tight text-[--color-text]">
@@ -70,9 +70,9 @@ export function Sidebar() {
       </nav>
 
       {/* Bottom hint */}
-      <div className="mt-4 rounded-lg border border-[--color-border-subtle] bg-[--color-background] p-3">
+      <div className="mt-4 rounded-lg border border-[--color-accent]/15 bg-[--color-accent]/5 p-3">
         <div className="flex items-center gap-2 text-xs text-[--color-text-subtle]">
-          <HardDrive className="h-3.5 w-3.5 flex-shrink-0" />
+          <HardDrive className="h-3.5 w-3.5 flex-shrink-0 text-[--color-accent]/60" />
           <span>Dados salvos localmente</span>
         </div>
       </div>

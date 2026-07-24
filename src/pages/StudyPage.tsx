@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Maximize2, Minimize2, CheckCircle2, RotateCcw, Flame } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -184,14 +184,24 @@ export function StudyPage() {
       <div className={cn('flex h-screen flex-col bg-[--color-background]', fullscreen && 'fixed inset-0 z-50')}>
         {/* Top bar */}
         <div className="flex items-center gap-4 border-b border-[--color-border-subtle] px-6 py-3">
-          <Button variant="ghost" size="icon" onClick={handleExit}>
+          <Button variant="ghost" size="icon" aria-label="Sair da sessão" onClick={handleExit}>
             <X className="h-4 w-4" />
           </Button>
-          <div className="flex-1">
-            <p className="text-sm font-medium text-[--color-text] truncate">{deckTitle}</p>
-            <StudyProgress current={currentIndex} total={totalCards} />
+          <div className="flex flex-col gap-1 flex-1 min-w-0">
+            <div className="flex items-baseline justify-between gap-2">
+              <p className="text-sm font-semibold text-[--color-text] truncate">{deckTitle}</p>
+              <span className="text-xs tabular-nums text-[--color-text-subtle] flex-shrink-0">
+                {currentIndex + 1}/{totalCards}
+              </span>
+            </div>
+            <StudyProgress current={currentIndex + 1} total={totalCards} />
           </div>
-          <Button variant="ghost" size="icon" onClick={() => setFullscreen((v) => !v)}>
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label={fullscreen ? 'Sair da tela cheia' : 'Tela cheia'}
+            onClick={() => setFullscreen((v) => !v)}
+          >
             {fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
           </Button>
         </div>
@@ -207,7 +217,7 @@ export function StudyPage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -12 }}
                   transition={{ duration: 0.2 }}
-                  className="rounded-xl border border-[--color-border-subtle] bg-[--color-surface] p-10"
+                  className="rounded-xl border border-[--color-accent]/25 bg-[--color-surface] p-10 shadow-lg shadow-black/30"
                 >
                   <ClozeText
                     rawText={currentCard.rawText}
@@ -221,7 +231,7 @@ export function StudyPage() {
             {/* Actions */}
             <div className="mt-6">
               {!revealed ? (
-                <Button className="w-full h-11" onClick={showAnswer}>
+                <Button size="lg" className="w-full" onClick={showAnswer}>
                   Mostrar resposta
                   <kbd className="ml-2 rounded border border-white/20 bg-white/10 px-1.5 py-0.5 text-xs">
                     Espaço
@@ -234,7 +244,7 @@ export function StudyPage() {
 
             {/* Keyboard hint */}
             <p className="mt-4 text-center text-xs text-[--color-text-subtle]">
-              {revealed ? 'Esc para sair' : 'Espaço para revelar • Esc para sair'}
+              {revealed ? '1–4 para avaliar • Esc para sair' : 'Espaço para revelar • Esc para sair'}
             </p>
           </div>
         </div>
@@ -250,7 +260,7 @@ export function StudyPage() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Continuar revisando</AlertDialogCancel>
-            <AlertDialogAction onClick={() => navigate(-1)}>Sair</AlertDialogAction>
+            <AlertDialogAction className={buttonVariants({ variant: 'destructive' })} onClick={() => navigate(-1)}>Sair</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
