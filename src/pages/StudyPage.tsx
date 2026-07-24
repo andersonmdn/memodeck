@@ -15,7 +15,6 @@ import {
 } from '@/components/ui/alert-dialog'
 import { ClozeText } from '@/components/study/ClozeText'
 import { RatingButtons } from '@/components/study/RatingButtons'
-import { StudyProgress } from '@/components/study/StudyProgress'
 import { useStudySession } from '@/hooks/useStudySession'
 import { useKeyboard } from '@/hooks/useKeyboard'
 import { getDeckById } from '@/storage/deckStore'
@@ -194,7 +193,6 @@ export function StudyPage() {
                 {currentIndex + 1}/{totalCards}
               </span>
             </div>
-            <StudyProgress current={currentIndex + 1} total={totalCards} />
           </div>
           <Button
             variant="ghost"
