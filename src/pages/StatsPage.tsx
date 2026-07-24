@@ -61,7 +61,7 @@ export function StatsPage() {
           { icon: Flame, label: 'Sequência', value: `${streak}d`, color: 'text-orange-400' },
           { icon: BookOpen, label: 'Hoje', value: reviewedToday, color: 'text-blue-400' },
           { icon: TrendingUp, label: 'Total', value: totalReviewed, color: 'text-[--color-accent]' },
-          { icon: BarChart2, label: 'Retenção', value: `${retention}%`, color: 'text-[--color-success]' },
+          { icon: BarChart2, label: 'Retenção', value: totalReviewed === 0 ? '–' : `${retention}%`, color: 'text-[--color-success]' },
         ].map(({ icon: Icon, label, value, color }) => (
           <Card key={label}>
             <CardContent className="p-5">
@@ -114,7 +114,8 @@ export function StatsPage() {
                     {last30Days.map((entry, index) => (
                       <Cell
                         key={index}
-                        fill={entry.count === maxCount ? 'var(--color-accent)' : 'var(--color-surface-2)'}
+                        fill="var(--color-accent)"
+                        fillOpacity={entry.count === 0 ? 0.08 : Math.max(0.25, entry.count / maxCount)}
                       />
                     ))}
                   </Bar>

@@ -3,12 +3,23 @@ import { useParams, useNavigate } from 'react-router'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Maximize2, Minimize2, CheckCircle2, RotateCcw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 import { ClozeText } from '@/components/study/ClozeText'
 import { RatingButtons } from '@/components/study/RatingButtons'
 import { StudyProgress } from '@/components/study/StudyProgress'
 import { useStudySession } from '@/hooks/useStudySession'
 import { useKeyboard } from '@/hooks/useKeyboard'
 import { getDeckById } from '@/storage/deckStore'
+import { cn } from '@/utils/cn'
 import type { Deck } from '@/models/Deck'
 import type { Rating } from '@/models/Card'
 import { calculateRetention } from '@/study/session'
@@ -18,15 +29,14 @@ export function StudyPage() {
   const navigate = useNavigate()
   const [deck, setDeck] = useState<Deck | null>(null)
   const [fullscreen, setFullscreen] = useState(false)
+  const [exitDialogOpen, setExitDialogOpen] = useState(false)
   const {
-    queue,
     currentCard,
     currentIndex,
     totalCards,
     revealed,
     done,
     ratings,
-    progress,
     start,
     showAnswer,
     rate,
@@ -48,13 +58,21 @@ export function StudyPage() {
     await rate(rating)
   }
 
+  const handleExit = () => {
+    if (!done && totalCards > 0 && ratings.length > 0) {
+      setExitDialogOpen(true)
+    } else {
+      navigate(-1)
+    }
+  }
+
   useKeyboard({
     ' ': () => { if (!revealed && !done) showAnswer() },
     '1': () => { if (revealed) handleRate(1) },
     '2': () => { if (revealed) handleRate(2) },
     '3': () => { if (revealed) handleRate(3) },
     '4': () => { if (revealed) handleRate(4) },
-    Escape: () => navigate('/library'),
+    Escape: handleExit,
     f: () => setFullscreen((v) => !v),
     F: () => setFullscreen((v) => !v),
   })
@@ -69,7 +87,7 @@ export function StudyPage() {
         <p className="text-sm text-[--color-text-muted]">
           Nenhum cartão para revisar agora em "{deck.title}".
         </p>
-        <Button onClick={() => navigate('/library')}>Voltar à biblioteca</Button>
+        <Button onClick={() => navigate(-1)}>Voltar à biblioteca</Button>
       </div>
     )
   }
@@ -108,75 +126,89 @@ export function StudyPage() {
           <Button variant="secondary" onClick={start}>
             <RotateCcw className="h-4 w-4" /> Repetir
           </Button>
-          <Button onClick={() => navigate('/library')}>Voltar à biblioteca</Button>
+          <Button onClick={() => navigate(-1)}>Voltar à biblioteca</Button>
         </div>
       </motion.div>
     )
   }
 
   return (
-    <div className={`flex h-screen flex-col bg-[--color-background] ${fullscreen ? 'fixed inset-0 z-50' : ''}`}>
-      {/* Top bar */}
-      <div className="flex items-center gap-4 border-b border-[--color-border-subtle] px-6 py-3">
-        <Button variant="ghost" size="icon" onClick={() => navigate('/library')}>
-          <X className="h-4 w-4" />
-        </Button>
-        <div className="flex-1">
-          <p className="text-sm font-medium text-[--color-text] truncate">{deck.title}</p>
-          <StudyProgress current={currentIndex} total={totalCards} />
-        </div>
-        <Button variant="ghost" size="icon" onClick={() => setFullscreen((v) => !v)}>
-          {fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
-        </Button>
-      </div>
-
-      {/* Card */}
-      <div className="flex flex-1 items-center justify-center p-8">
-        <div className="w-full max-w-2xl">
-          <AnimatePresence mode="wait">
-            {currentCard && (
-              <motion.div
-                key={currentCard.id + revealed}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.2 }}
-                className="rounded-xl border border-[--color-border-subtle] bg-[--color-surface] p-8"
-              >
-                <ClozeText
-                  rawText={currentCard.rawText}
-                  clozeIndex={currentCard.clozeIndex}
-                  revealed={revealed}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Actions */}
-          <div className="mt-6">
-            {!revealed ? (
-              <Button
-                className="w-full h-11"
-                onClick={showAnswer}
-              >
-                Mostrar resposta
-                <kbd className="ml-2 rounded border border-white/20 bg-white/10 px-1.5 py-0.5 text-xs">
-                  Espaço
-                </kbd>
-              </Button>
-            ) : (
-              <RatingButtons onRate={handleRate} />
-            )}
+    <>
+      <div className={cn('flex h-screen flex-col bg-[--color-background]', fullscreen && 'fixed inset-0 z-50')}>
+        {/* Top bar */}
+        <div className="flex items-center gap-4 border-b border-[--color-border-subtle] px-6 py-3">
+          <Button variant="ghost" size="icon" onClick={handleExit}>
+            <X className="h-4 w-4" />
+          </Button>
+          <div className="flex-1">
+            <p className="text-sm font-medium text-[--color-text] truncate">{deck.title}</p>
+            <StudyProgress current={currentIndex} total={totalCards} />
           </div>
+          <Button variant="ghost" size="icon" onClick={() => setFullscreen((v) => !v)}>
+            {fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+          </Button>
+        </div>
 
-          {/* Keyboard hint */}
-          <p className="mt-4 text-center text-xs text-[--color-text-subtle]">
-            {revealed
-              ? 'Teclas 1–4 para avaliar • Esc para sair'
-              : 'Espaço para revelar • Esc para sair'}
-          </p>
+        {/* Card */}
+        <div className="flex flex-1 items-center justify-center p-8">
+          <div className="w-full max-w-2xl">
+            <AnimatePresence mode="wait">
+              {currentCard && (
+                <motion.div
+                  key={currentCard.id + revealed}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.2 }}
+                  className="rounded-xl border border-[--color-border-subtle] bg-[--color-surface] p-8"
+                >
+                  <ClozeText
+                    rawText={currentCard.rawText}
+                    clozeIndex={currentCard.clozeIndex}
+                    revealed={revealed}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Actions */}
+            <div className="mt-6">
+              {!revealed ? (
+                <Button className="w-full h-11" onClick={showAnswer}>
+                  Mostrar resposta
+                  <kbd className="ml-2 rounded border border-white/20 bg-white/10 px-1.5 py-0.5 text-xs">
+                    Espaço
+                  </kbd>
+                </Button>
+              ) : (
+                <RatingButtons onRate={handleRate} />
+              )}
+            </div>
+
+            {/* Keyboard hint */}
+            <p className="mt-4 text-center text-xs text-[--color-text-subtle]">
+              {revealed
+                ? 'Teclas 1–4 para avaliar • Esc para sair'
+                : 'Espaço para revelar • Esc para sair'}
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+
+      <AlertDialog open={exitDialogOpen} onOpenChange={setExitDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Sair da sessão?</AlertDialogTitle>
+            <AlertDialogDescription>
+              As revisões feitas até agora serão salvas. Você pode continuar o deck depois.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Continuar revisando</AlertDialogCancel>
+            <AlertDialogAction onClick={() => navigate(-1)}>Sair</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   )
 }

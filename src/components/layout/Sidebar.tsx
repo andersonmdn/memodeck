@@ -1,16 +1,29 @@
+import { useState } from 'react'
 import { NavLink } from 'react-router'
-import { LayoutDashboard, Library, BarChart2, Settings, BookOpen, Layers, Bot } from 'lucide-react'
+import { LayoutDashboard, Library, BarChart2, Settings, BookOpen, Layers, Sparkles } from 'lucide-react'
 import { cn } from '@/utils/cn'
 
-const NAV_ITEMS = [
+interface NavItem {
+  to: string
+  icon: React.ElementType
+  label: string
+  end?: boolean
+  newFeature?: boolean
+}
+
+const NAV_ITEMS: NavItem[] = [
   { to: '/', icon: LayoutDashboard, label: 'Dashboard', end: true },
   { to: '/library', icon: Library, label: 'Biblioteca' },
+  { to: '/ai-prompt', icon: Sparkles, label: 'Criar com IA', newFeature: true },
   { to: '/stats', icon: BarChart2, label: 'Estatísticas' },
-  { to: '/ai-prompt', icon: Bot, label: 'Prompt IA' },
   { to: '/settings', icon: Settings, label: 'Configurações' },
 ]
 
 export function Sidebar() {
+  const [aiBadgeSeen, setAiBadgeSeen] = useState(
+    () => !!localStorage.getItem('memodeck-ai-nav-seen'),
+  )
+
   return (
     <aside className="flex h-screen w-56 flex-col border-r border-[--color-border-subtle] bg-[--color-surface] px-3 py-4">
       {/* Logo */}
@@ -25,11 +38,17 @@ export function Sidebar() {
 
       {/* Nav */}
       <nav className="flex-1 space-y-0.5">
-        {NAV_ITEMS.map(({ to, icon: Icon, label, end }) => (
+        {NAV_ITEMS.map(({ to, icon: Icon, label, end, newFeature }) => (
           <NavLink
             key={to}
             to={to}
             end={end}
+            onClick={() => {
+              if (newFeature && !aiBadgeSeen) {
+                localStorage.setItem('memodeck-ai-nav-seen', '1')
+                setAiBadgeSeen(true)
+              }
+            }}
             className={({ isActive }) =>
               cn(
                 'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
@@ -40,7 +59,12 @@ export function Sidebar() {
             }
           >
             <Icon className="h-4 w-4 flex-shrink-0" />
-            {label}
+            <span className="flex-1">{label}</span>
+            {newFeature && !aiBadgeSeen && (
+              <span className="inline-flex items-center rounded-full bg-[--color-accent]/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-[--color-accent]">
+                Novo
+              </span>
+            )}
           </NavLink>
         ))}
       </nav>

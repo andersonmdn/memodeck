@@ -21,6 +21,7 @@ type Feedback = { type: 'success' | 'error'; message: string } | null
 export function SettingsPage() {
   const importRef = useRef<HTMLInputElement>(null)
   const [feedback, setFeedback] = useState<Feedback>(null)
+  const [importConfirmOpen, setImportConfirmOpen] = useState(false)
 
   const showFeedback = (type: 'success' | 'error', message: string) => {
     setFeedback({ type, message })
@@ -122,11 +123,34 @@ export function SettingsPage() {
               className="sr-only"
               onChange={handleImport}
             />
-            <Button variant="secondary" onClick={() => importRef.current?.click()}>
+            <Button variant="secondary" onClick={() => setImportConfirmOpen(true)}>
               <Upload className="h-4 w-4" /> Importar backup
             </Button>
           </CardContent>
         </Card>
+
+        <AlertDialog open={importConfirmOpen} onOpenChange={setImportConfirmOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Restaurar backup?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Os dados do arquivo serão mesclados com seus dados atuais. Decks, cartões e
+                progresso existentes não serão removidos.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancelar</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() => {
+                  setImportConfirmOpen(false)
+                  importRef.current?.click()
+                }}
+              >
+                Selecionar arquivo
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
 
         {/* Reset */}
         <Card className="border-[--color-danger]/20">

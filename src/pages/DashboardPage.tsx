@@ -1,11 +1,9 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { motion } from 'framer-motion'
-import { BookOpen, Flame, TrendingUp, Clock, Plus, ArrowRight } from 'lucide-react'
+import { BookOpen, Flame, TrendingUp, Clock, ArrowRight, Sparkles } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { DeckImport } from '@/components/deck/DeckImport'
 import { useDecks } from '@/hooks/useDeck'
 import { useGlobalStats } from '@/hooks/useStats'
@@ -40,7 +38,6 @@ export function DashboardPage() {
   const navigate = useNavigate()
   const decks = useDecks()
   const { dueToday, reviewedToday, streak, totalReviewed, retention } = useGlobalStats()
-  const [importOpen, setImportOpen] = useState(false)
   const recentDecks = decks.slice(0, 4)
 
   return (
@@ -63,18 +60,44 @@ export function DashboardPage() {
         <StatCard icon={BookOpen} label="Devidos hoje" value={dueToday} sub="cartões para revisar" color="text-[--color-accent]" />
         <StatCard icon={Clock} label="Revisados hoje" value={reviewedToday} color="text-blue-400" />
         <StatCard icon={Flame} label="Sequência" value={`${streak}d`} sub="dias consecutivos" color="text-orange-400" />
-        <StatCard icon={TrendingUp} label="Retenção" value={`${retention}%`} sub={`${totalReviewed} revisões`} color="text-[--color-success]" />
+        <StatCard
+          icon={TrendingUp}
+          label="Retenção"
+          value={totalReviewed === 0 ? '–' : `${retention}%`}
+          sub={totalReviewed === 0 ? 'Estude para ver' : `${totalReviewed} revisões`}
+          color="text-[--color-success]"
+        />
       </motion.div>
 
-      {/* Import zone */}
-      <motion.div
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-        className="mb-8"
-      >
-        <DeckImport onImported={() => setImportOpen(false)} />
-      </motion.div>
+      {/* Empty state — two-card split */}
+      {decks.length === 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+        >
+          <p className="mb-4 text-sm font-semibold text-[--color-text]">Comece agora</p>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="rounded-xl border border-[--color-border-subtle] bg-[--color-surface] p-5">
+              <p className="mb-4 text-sm font-medium text-[--color-text]">Importar arquivo</p>
+              <DeckImport />
+            </div>
+            <button
+              type="button"
+              onClick={() => navigate('/ai-prompt')}
+              className="group flex flex-col items-center justify-center gap-4 rounded-xl border border-[--color-border-subtle] bg-[--color-surface] p-10 text-center transition-colors hover:border-[--color-accent]/40 hover:bg-[--color-surface-2]"
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[--color-surface-2] transition-colors group-hover:bg-[--color-accent]/15">
+                <Sparkles className="h-6 w-6 text-[--color-accent]" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-[--color-text]">Gerar com IA</p>
+                <p className="mt-0.5 text-xs text-[--color-text-subtle]">Use um prompt pronto com qualquer LLM</p>
+              </div>
+            </button>
+          </div>
+        </motion.div>
+      )}
 
       {/* Recent decks */}
       {recentDecks.length > 0 && (
@@ -115,34 +138,6 @@ export function DashboardPage() {
           </div>
         </motion.div>
       )}
-
-      {/* Empty state */}
-      {decks.length === 0 && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="mt-8 flex flex-col items-center justify-center rounded-xl border border-dashed border-[--color-border] py-16 text-center"
-        >
-          <BookOpen className="mb-3 h-10 w-10 text-[--color-text-subtle]" />
-          <p className="text-sm font-medium text-[--color-text]">Nenhum deck importado</p>
-          <p className="mt-1 text-xs text-[--color-text-subtle]">
-            Arraste um arquivo .deck.md acima para começar
-          </p>
-          <Button className="mt-4" size="sm" onClick={() => setImportOpen(true)}>
-            <Plus className="h-4 w-4" /> Importar deck
-          </Button>
-        </motion.div>
-      )}
-
-      <Dialog open={importOpen} onOpenChange={setImportOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Importar deck</DialogTitle>
-          </DialogHeader>
-          <DeckImport onImported={() => setImportOpen(false)} />
-        </DialogContent>
-      </Dialog>
     </div>
   )
 }
