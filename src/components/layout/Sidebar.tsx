@@ -58,7 +58,7 @@ export function Sidebar() {
               )
             }
           >
-            <Icon className="h-4 w-4 flex-shrink-0" />
+            <Icon className="h-4 w-4 shrink-0" />
             <span className="flex-1">{label}</span>
             {newFeature && !aiBadgeSeen && (
               <span className="inline-flex items-center rounded-full bg-[--color-accent]/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-[--color-accent]">
@@ -72,7 +72,7 @@ export function Sidebar() {
       {/* Bottom hint */}
       <div className="mt-4 rounded-lg border border-[--color-accent]/15 bg-[--color-accent]/5 p-3">
         <div className="flex items-center gap-2 text-xs text-[--color-text-subtle]">
-          <HardDrive className="h-3.5 w-3.5 flex-shrink-0 text-[--color-accent]/60" />
+          <HardDrive className="h-3.5 w-3.5 shrink-0 text-[--color-accent]/60" />
           <span>Dados salvos localmente</span>
         </div>
       </div>

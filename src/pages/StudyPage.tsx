@@ -189,7 +189,7 @@ export function StudyPage() {
           <div className="flex flex-col gap-1 flex-1 min-w-0">
             <div className="flex items-baseline justify-between gap-2">
               <p className="text-sm font-semibold text-[--color-text] truncate">{deckTitle}</p>
-              <span className="text-xs tabular-nums text-[--color-text-subtle] flex-shrink-0">
+              <span className="text-xs tabular-nums text-[--color-text-subtle] shrink-0">
                 {currentIndex + 1}/{totalCards}
               </span>
             </div>

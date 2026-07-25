@@ -129,8 +129,8 @@ export function DeckImport({ onImported }: { onImported?: () => void }) {
                   : 'border-[--color-border] bg-[--color-surface-2]',
             )}
           >
-            {state.status === 'success' && <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-[--color-success]" />}
-            {state.status === 'error' && <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-[--color-danger]" />}
+            {state.status === 'success' && <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-[--color-success]" />}
+            {state.status === 'error' && <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-[--color-danger]" />}
             <div className="min-w-0 flex-1 text-sm">
               <p className={cn(
                 'font-medium',
@@ -149,7 +149,7 @@ export function DeckImport({ onImported }: { onImported?: () => void }) {
             <Button
               variant="ghost"
               size="icon"
-              className="h-6 w-6 flex-shrink-0"
+              className="h-6 w-6 shrink-0"
               onClick={(e) => { e.stopPropagation(); setState({ status: 'idle' }) }}
             >
               <X className="h-3.5 w-3.5" />

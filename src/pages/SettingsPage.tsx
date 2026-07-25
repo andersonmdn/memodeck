@@ -69,9 +69,9 @@ export function SettingsPage() {
           }`}
         >
           {feedback.type === 'success' ? (
-            <CheckCircle className="h-4 w-4 flex-shrink-0" />
+            <CheckCircle className="h-4 w-4 shrink-0" />
           ) : (
-            <AlertCircle className="h-4 w-4 flex-shrink-0" />
+            <AlertCircle className="h-4 w-4 shrink-0" />
           )}
           {feedback.message}
         </motion.div>

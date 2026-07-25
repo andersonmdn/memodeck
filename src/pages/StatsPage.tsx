@@ -15,7 +15,7 @@ function DeckStatRow({ deck }: { deck: Deck }) {
         <p className="truncate text-sm font-medium text-[--color-text]">{deck.title}</p>
         <p className="text-xs text-[--color-text-subtle]">{reviewed}/{total} revisados</p>
       </div>
-      <div className="flex items-center gap-4 flex-shrink-0 text-xs">
+      <div className="flex items-center gap-4 shrink-0 text-xs">
         <span className="text-[--color-accent] font-medium">{progress}%</span>
         <span className="text-[--color-success] font-medium">{retention}% ret.</span>
       </div>

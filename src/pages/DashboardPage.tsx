@@ -154,7 +154,7 @@ export function DashboardPage() {
                           {deck.lastStudied ? formatRelative(deck.lastStudied) : 'Nunca estudado'}
                         </p>
                       </div>
-                      <div className="flex items-center gap-2 flex-shrink-0">
+                      <div className="flex items-center gap-2 shrink-0">
                         {deck.tags.slice(0, 2).map((tag) => (
                           <Badge key={tag} variant="secondary" className="text-xs">{tag}</Badge>
                         ))}
