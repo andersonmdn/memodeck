@@ -24,7 +24,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import {
   Dialog,
@@ -49,6 +48,7 @@ export function DeckCard({ deck }: DeckCardProps) {
   const { renameDeck, toggleFavorite, removeDeck, copyDeck } = useDeckActions()
   const [renameOpen, setRenameOpen] = useState(false)
   const [newTitle, setNewTitle] = useState(deck.title)
+  const [deleteOpen, setDeleteOpen] = useState(false)
 
   const handleRename = async () => {
     if (newTitle.trim()) {
@@ -60,8 +60,8 @@ export function DeckCard({ deck }: DeckCardProps) {
   return (
     <>
       <motion.div
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         transition={{ duration: 0.2 }}
       >
         <Card className="group hover:border-[--color-border] transition-all duration-200 hover:shadow-lg hover:shadow-black/20">
@@ -104,34 +104,12 @@ export function DeckCard({ deck }: DeckCardProps) {
                     )}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <DropdownMenuItem
-                        className="text-[--color-danger] focus:text-[--color-danger] focus:bg-[--color-danger]/10"
-                        onSelect={(e) => e.preventDefault()}
-                      >
-                        <Trash2 className="h-4 w-4" /> Excluir
-                      </DropdownMenuItem>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Excluir deck</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          Esta ação não pode ser desfeita. O deck "{deck.title}" e todo o progresso
-                          associado serão removidos permanentemente.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                        <AlertDialogAction
-                          className="bg-[--color-danger] hover:bg-[--color-danger]/80 text-white"
-                          onClick={() => removeDeck(deck.id)}
-                        >
-                          Excluir
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                  <DropdownMenuItem
+                    className="text-[--color-danger] focus:text-[--color-danger] focus:bg-[--color-danger]/10"
+                    onClick={() => setDeleteOpen(true)}
+                  >
+                    <Trash2 className="h-4 w-4" /> Excluir
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
@@ -175,6 +153,28 @@ export function DeckCard({ deck }: DeckCardProps) {
           </CardContent>
         </Card>
       </motion.div>
+
+      {/* Delete confirmation */}
+      <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Excluir deck</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta ação não pode ser desfeita. O deck "{deck.title}" e todo o progresso
+              associado serão removidos permanentemente.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-[--color-danger] hover:bg-[--color-danger]/80 text-white"
+              onClick={() => removeDeck(deck.id)}
+            >
+              Excluir
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {/* Rename dialog */}
       <Dialog open={renameOpen} onOpenChange={setRenameOpen}>
