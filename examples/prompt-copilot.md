@@ -6,7 +6,13 @@ Cole este prompt no Copilot (ou outro modelo) substituindo `[TEMA]` pelo assunto
 
 ## Prompt
 
-Gere um arquivo `.deck.md` sobre **[TEMA]** no formato MemoDeck para estudo com flashcards de lacunas (cloze deletion).
+Gere um arquivo `.deck.md` sobre **[TEMA]** no formato MemoDeck com flashcards de dois tipos: **Cloze Deletion** (lacunas) e **Steps** (sequências ordenadas). Escolha automaticamente o melhor formato para cada informação.
+
+### Escolha do formato
+
+Use **Cloze** para conceitos, definições, fórmulas e fatos isolados para memorizar.
+Use **Steps** para processos, procedimentos, deploys, checklists, troubleshooting e qualquer coisa com ordem a seguir.
+Misture os dois formatos no mesmo arquivo quando fizer sentido.
 
 ### Regras obrigatórias de formato
 
@@ -23,57 +29,31 @@ version: 1
 ---
 ```
 
-**2. Seções com heading `#`** — agrupe os cards por tópico:
+**2. Seções com heading `#`** — agrupe os cards por tópico. Gere no mínimo 4 seções.
+
+**3. Tipo Cloze Deletion** — sintaxe `{{cN::resposta}}`
+
+- `N` é um inteiro começando em 1 (c1, c2, c3…)
+- Índices diferentes no mesmo parágrafo geram cards separados
+- Cada parágrafo-card deve ser separado por linha em branco acima E abaixo
+- Não use HTML — apenas Markdown inline (negrito, itálico, `código`)
+
+**4. Tipo Steps** — bloco de código com linguagem `steps`:
 
 ```
-# Nome da Seção
+```steps
+title: Nome descritivo do processo
+
+1. Primeiro passo
+2. Segundo passo
+3. Terceiro passo
+4. Quarto passo
+```
 ```
 
-Cada grupo temático deve ter seu próprio heading antes dos cards.
-
-**3. Cada frase/card é um parágrafo separado por linha em branco**
-
-> CRÍTICO: uma linha em branco (linha vazia) DEVE aparecer antes E depois de cada parágrafo-card.
-> Nunca coloque dois cards consecutivos sem uma linha completamente vazia entre eles.
-
-Formato correto:
-```
-# Seção A
-
-O protocolo {{c1::HTTP}} opera na camada de aplicação.
-
-A porta padrão do HTTPS é {{c1::443}}.
-
-# Seção B
-
-Um índice de banco de dados acelera {{c1::leituras}} mas pode tornar {{c2::escritas}} mais lentas.
-```
-
-Formato INCORRETO (sem linha em branco — gera um único card errado):
-```
-O protocolo {{c1::HTTP}} opera na camada de aplicação.
-A porta padrão do HTTPS é {{c1::443}}.
-```
-
-**4. Sintaxe cloze** — `{{cN::resposta}}`
-
-- `N` é um número inteiro começando em 1
-- Dentro do mesmo parágrafo, `{{c1::x}}` e `{{c2::y}}` geram **dois cards diferentes** para o mesmo parágrafo
-- Clozes com o mesmo número no mesmo parágrafo (`{{c1::x}} ... {{c1::y}}`) são uma **única lacuna** com duas revelações
-- Use lacunas simples quando o conceito for direto; use múltiplas quando houver relação entre termos
-
-**5. Tabelas são permitidas** mas não geram cards — use-as só para referência:
-
-```
-| Método | Idempotente |
-|--------|-------------|
-| GET    | sim         |
-| POST   | não         |
-```
-
-Coloque a tabela em seu próprio parágrafo (separado por linhas em branco) e adicione cards cloze depois.
-
-**6. Quantidade**: gere entre 20 e 40 cards distribuídos em pelo menos 4 seções `#`.
+- O campo `title:` é obrigatório e deve descrever o processo
+- Use no mínimo 3 passos (recomendado: 4–8)
+- Cada bloco steps deve ser separado por linha em branco acima E abaixo
 
 ---
 
@@ -104,31 +84,36 @@ Uma imagem Docker é construída a partir de um {{c1::Dockerfile}}.
 
 O comando para construir uma imagem é `docker {{c1::build}}`.
 
-Imagens são compostas por {{c1::camadas}} (layers) sobrepostas — cada instrução do Dockerfile cria uma nova camada.
-
 # Containers
 
 `docker run -d` executa o container em modo {{c1::detached}} (background).
 
-Para listar containers em execução use `docker {{c1::ps}}`; para ver todos (incluindo parados) use `docker ps {{c2::-a}}`.
+Para listar containers em execução: `docker {{c1::ps}}`; para ver todos: `docker ps {{c2::-a}}`.
 
-`docker {{c1::exec}} -it <id> bash` abre um terminal interativo dentro do container.
+# Build e deploy
 
-# Volumes e redes
+```steps
+title: Deploy de imagem Docker em produção
 
-Dados em containers são {{c1::efêmeros}} — use volumes para persistência.
-
-`docker volume create` cria um volume gerenciado pelo {{c1::Docker}}.
-
-A flag `-p 8080:80` mapeia a porta {{c1::80}} do container para a porta {{c2::8080}} do host.
+1. Escrever o Dockerfile na raiz do projeto
+2. Buildar a imagem com docker build -t nome:tag .
+3. Testar a imagem localmente com docker run
+4. Autenticar no registry com docker login
+5. Fazer push da imagem com docker push nome:tag
+6. Atualizar o serviço no servidor de produção
+7. Verificar os logs com docker logs <container>
+```
 ```
 
 ---
 
 ## Checklist antes de entregar
 
-- [ ] Frontmatter presente com `title`, `description`, `tags` e `version`
+- [ ] Frontmatter com `title`, `description`, `tags` e `version`
 - [ ] Pelo menos 4 seções com heading `#`
-- [ ] Cada parágrafo-card separado por **linha em branco acima e abaixo**
-- [ ] Todo card contém pelo menos um `{{cN::texto}}`
-- [ ] Nenhum parágrafo-card é continuação direta (sem linha em branco) de outro
+- [ ] Conceitos e definições usam formato Cloze (`{{cN::texto}}`)
+- [ ] Processos e sequências usam formato Steps (` ```steps `)
+- [ ] Cada parágrafo-card separado por linha em branco acima e abaixo
+- [ ] Cada bloco steps separado por linha em branco acima e abaixo
+- [ ] Blocos steps com `title:` e no mínimo 3 passos
+- [ ] Todo card cloze contém pelo menos um `{{cN::texto}}`

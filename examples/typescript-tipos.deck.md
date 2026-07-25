@@ -67,6 +67,16 @@ type Shape =
 
 O operador `{{c1::in}}` (`'prop' in obj`) afunila para tipos que possuem aquela propriedade.
 
+```steps
+title: Criar discriminated union type-safe
+
+1. Definir um campo literal discriminante (ex: kind) em cada variante
+2. Declarar o tipo union com todas as variantes
+3. Usar switch no campo discriminante para narrowing automático
+4. Acessar propriedades específicas de cada variante dentro do case
+5. Adicionar case default com never para garantir exhaustividade
+```
+
 # Satisfies
 
 O operador `{{c1::satisfies}}` valida que um valor atende a um tipo **sem alterar** o tipo inferido — útil para manter tipos literais após validação.

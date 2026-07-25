@@ -80,6 +80,16 @@ Os níveis de isolamento, do mais fraco ao mais forte: `Read Uncommitted` → `{
 
 `Read Committed` (padrão no PostgreSQL) evita {{c1::dirty reads}} mas permite {{c2::non-repeatable reads}}.
 
+```steps
+title: Executar uma transação segura
+
+1. Iniciar a transação com BEGIN
+2. Executar as operações de leitura e escrita necessárias
+3. Verificar se os dados resultantes são válidos
+4. Em caso de erro, desfazer tudo com ROLLBACK
+5. Em caso de sucesso, confirmar permanentemente com COMMIT
+```
+
 # Constraints
 
 `PRIMARY KEY` combina `{{c1::UNIQUE}}` + `{{c2::NOT NULL}}` e define a chave primária da tabela.

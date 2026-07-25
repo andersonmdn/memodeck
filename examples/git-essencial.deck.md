@@ -47,3 +47,17 @@ Um {{c1::fast-forward}} ocorre quando a branch de destino não divergiu, e o pon
 `git stash` salva as mudanças atuais em uma {{c1::pilha}} temporária e restaura o working directory para o estado limpo do último commit.
 
 `git stash pop` restaura as mudanças e as {{c1::remove}} da pilha. `git stash apply` restaura mas {{c2::mantém}} a entrada na pilha.
+
+# Fluxo de trabalho
+
+```steps
+title: Feature branch workflow
+
+1. Atualizar a main com git pull origin main
+2. Criar o branch com git switch -c feature/nome
+3. Implementar as mudanças com commits incrementais
+4. Sincronizar com a main com git rebase origin/main
+5. Resolver conflitos se houver e continuar com git rebase --continue
+6. Enviar o branch com git push -u origin feature/nome
+7. Abrir pull request e aguardar revisão
+```

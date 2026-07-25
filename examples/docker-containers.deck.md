@@ -84,3 +84,17 @@ volumes:
 `docker compose up -d` inicia todos os serviços em {{c1::background}}. `docker compose down -v` para e remove containers **e** {{c2::volumes}}.
 
 `depends_on` garante a {{c1::ordem de inicialização}}, mas não espera o serviço estar {{c2::saudável}} — para isso, use `healthcheck`.
+
+# Deploy de imagem
+
+```steps
+title: Build e push de imagem para registry
+
+1. Escrever o Dockerfile na raiz do projeto
+2. Buildar a imagem com docker build -t nome:tag .
+3. Testar a imagem localmente com docker run
+4. Autenticar no registry com docker login
+5. Enviar a imagem com docker push nome:tag
+6. Atualizar o serviço no ambiente de produção
+7. Verificar os logs com docker logs <container>
+```

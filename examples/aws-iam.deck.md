@@ -39,3 +39,14 @@ O {{c1::IAM Access Analyzer}} identifica recursos compartilhados com {{c2::entid
 O princípio do {{c1::menor privilégio}} determina que cada identidade deve ter apenas as permissões estritamente necessárias para sua função.
 
 Habilitar o {{c1::MFA}} (Multi-Factor Authentication) para o usuário root e para usuários com acesso privilegiado é uma prática essencial de segurança.
+
+```steps
+title: Criar usuário IAM com acesso mínimo
+
+1. Acessar o console IAM e criar um novo usuário sem acesso ao console
+2. Criar um grupo com policy restrita ao serviço necessário
+3. Adicionar o usuário ao grupo
+4. Gerar Access Keys apenas se acesso programático for obrigatório
+5. Habilitar MFA para o usuário
+6. Validar as permissões com o IAM Policy Simulator
+```

@@ -77,3 +77,14 @@ Requisições com métodos não-simples (PUT, DELETE, PATCH) ou headers customiz
 JWT (JSON Web Token) é composto por três partes separadas por `.`: `{{c1::header}}`.`{{c2::payload}}`.`{{c3::signature}}`.
 
 A {{c1::signature}} do JWT garante que o conteúdo não foi adulterado — mas o payload é apenas {{c2::Base64}}, não criptografado.
+
+```steps
+title: Autenticar com JWT em uma API REST
+
+1. Enviar credenciais via POST /auth/login com email e senha
+2. Receber o JWT no corpo da resposta
+3. Armazenar o token de forma segura (httpOnly cookie ou memória)
+4. Incluir o token em cada requisição: Authorization: Bearer <token>
+5. Verificar a expiração do token (campo exp no payload)
+6. Renovar o token com o refresh token antes de expirar
+```
