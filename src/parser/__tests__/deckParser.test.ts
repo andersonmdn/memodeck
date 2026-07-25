@@ -49,7 +49,7 @@ describe('parseDeckText', () => {
 
   it('emite warning para deck sem clozes', () => {
     const { warnings } = parseDeckText('---\ntitle: Vazio\n---\nSem cloze aqui.')
-    expect(warnings.some((w) => w.includes('Nenhum cloze'))).toBe(true)
+    expect(warnings.some((w) => w.includes('Nenhum cartão'))).toBe(true)
   })
 
   it('usa título padrão se frontmatter não tem title', () => {

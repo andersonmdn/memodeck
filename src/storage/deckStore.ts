@@ -56,6 +56,7 @@ export async function duplicateDeck(id: string): Promise<Deck> {
     dueDate: new Date(),
     interval: 1,
     easeFactor: 2.5,
+    reviewCount: 0,
   }))
 
   await saveImportedDeck(newDeck, newCards)

@@ -160,7 +160,7 @@ export function LibraryPage() {
             <>
               <p className="text-sm font-medium text-[var(--color-text)]">Biblioteca vazia</p>
               <p className="mt-1 text-xs text-[var(--color-text-subtle)]">
-                Importe seu primeiro deck para começar
+                Importe um deck com Cloze, Steps ou ambos para começar
               </p>
               <Button className="mt-4" size="sm" onClick={() => setImportOpen(true)}>
                 <Plus className="h-4 w-4" /> Importar deck

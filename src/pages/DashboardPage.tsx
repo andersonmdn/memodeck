@@ -63,10 +63,12 @@ export function DashboardPage() {
             <Layers className="h-8 w-8 text-[var(--color-accent)]" />
           </div>
           <h2 className="text-xl font-semibold text-[var(--color-text)]">
-            Estude qualquer tema com cartões inteligentes
+            Estude qualquer tema com exercícios inteligentes
           </h2>
           <p className="mt-2 max-w-sm text-sm text-[var(--color-text-muted)]">
-            Importe um arquivo <code className="rounded bg-[var(--color-surface-2)] px-1 py-0.5 text-xs">.deck.md</code> ou gere um deck com IA em segundos.
+            Suporte a <strong className="text-[var(--color-text)]">Cloze</strong> para conceitos e definições,
+            e <strong className="text-[var(--color-text)]">Steps</strong> para processos e sequências.
+            Importe um arquivo <code className="rounded bg-[var(--color-surface-2)] px-1 py-0.5 text-xs">.deck.md</code> ou gere com IA em segundos.
           </p>
           <div className="mt-10 w-full max-w-lg">
             <div className="grid gap-4 sm:grid-cols-2">

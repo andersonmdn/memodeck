@@ -128,6 +128,22 @@ export function DeckCard({ deck }: DeckCardProps) {
               </div>
             )}
 
+            {/* Content type badges */}
+            {deck.contentTypes?.length > 0 && (
+              <div className="mt-2 flex gap-1.5">
+                {deck.contentTypes.includes('cloze') && (
+                  <Badge variant="default" className="text-[10px] py-0">
+                    Cloze
+                  </Badge>
+                )}
+                {deck.contentTypes.includes('steps') && (
+                  <Badge variant="success" className="text-[10px] py-0">
+                    Steps
+                  </Badge>
+                )}
+              </div>
+            )}
+
             {/* Progress */}
             <div className="mt-4">
               <div className="mb-1.5 flex items-center justify-between text-xs text-[var(--color-text-subtle)]">

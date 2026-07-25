@@ -1,10 +1,9 @@
-﻿import { motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts'
-import { Flame, TrendingUp, BookOpen, BarChart2 } from 'lucide-react'
+import { Flame, TrendingUp, BookOpen, BarChart2, ListOrdered, CheckCircle2, XCircle } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { useGlobalStats } from '@/hooks/useStats'
+import { useGlobalStats, useDeckStats, useStepsStats } from '@/hooks/useStats'
 import { useDecks } from '@/hooks/useDeck'
-import { useDeckStats } from '@/hooks/useStats'
 import type { Deck } from '@/models/Deck'
 
 function DeckStatRow({ deck }: { deck: Deck }) {
@@ -12,7 +11,14 @@ function DeckStatRow({ deck }: { deck: Deck }) {
   return (
     <div className="flex items-center gap-4 py-3 border-b border-[var(--color-border-subtle)] last:border-0">
       <div className="flex-1 min-w-0">
-        <p className="truncate text-sm font-medium text-[var(--color-text)]">{deck.title}</p>
+        <div className="flex items-center gap-2 min-w-0">
+          <p className="truncate text-sm font-medium text-[var(--color-text)]">{deck.title}</p>
+          {deck.contentTypes?.includes('steps') && (
+            <span className="shrink-0 inline-flex items-center rounded-full bg-emerald-500/15 px-1.5 py-0.5 text-[10px] font-medium text-emerald-400">
+              Steps
+            </span>
+          )}
+        </div>
         <p className="text-xs text-[var(--color-text-subtle)]">{reviewed}/{total} revisados</p>
       </div>
       <div className="flex items-center gap-4 shrink-0 text-xs">
@@ -39,6 +45,7 @@ function CustomTooltip({ active, payload, label }: { active?: boolean; payload?:
 
 export function StatsPage() {
   const { streak, totalReviewed, retention, reviewedToday, last30Days } = useGlobalStats()
+  const { total: stepsTotal, totalReviews: stepsReviews, correct: stepsCorrect, incorrect: stepsIncorrect, accuracy: stepsAccuracy } = useStepsStats()
   const decks = useDecks()
 
   const maxCount = Math.max(...last30Days.map((d) => d.count), 1)
@@ -127,6 +134,58 @@ export function StatsPage() {
           </CardContent>
         </Card>
       </motion.div>
+
+      {/* Steps stats */}
+      {stepsTotal > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.12 }}
+          className="mb-8"
+        >
+          <Card>
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <div className="flex h-6 w-6 items-center justify-center rounded-md bg-emerald-500/15">
+                  <ListOrdered className="h-3.5 w-3.5 text-emerald-400" />
+                </div>
+                <CardTitle className="text-sm">Exercícios Steps</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                <div className="rounded-lg bg-[var(--color-surface-2)] p-4">
+                  <p className="text-xs text-[var(--color-text-subtle)] uppercase tracking-wider">Sequências</p>
+                  <p className="mt-1 text-2xl font-bold text-emerald-400">{stepsTotal}</p>
+                </div>
+                <div className="rounded-lg bg-[var(--color-surface-2)] p-4">
+                  <p className="text-xs text-[var(--color-text-subtle)] uppercase tracking-wider">Revisões</p>
+                  <p className="mt-1 text-2xl font-bold text-[var(--color-text)]">{stepsReviews}</p>
+                </div>
+                <div className="rounded-lg bg-[var(--color-surface-2)] p-4">
+                  <div className="flex items-center gap-1.5">
+                    <CheckCircle2 className="h-3.5 w-3.5 text-[var(--color-success)]" />
+                    <p className="text-xs text-[var(--color-text-subtle)] uppercase tracking-wider">Acertos</p>
+                  </div>
+                  <p className="mt-1 text-2xl font-bold text-[var(--color-success)]">{stepsCorrect}</p>
+                </div>
+                <div className="rounded-lg bg-[var(--color-surface-2)] p-4">
+                  <div className="flex items-center gap-1.5">
+                    <XCircle className="h-3.5 w-3.5 text-[var(--color-danger)]" />
+                    <p className="text-xs text-[var(--color-text-subtle)] uppercase tracking-wider">Erros</p>
+                  </div>
+                  <p className="mt-1 text-2xl font-bold text-[var(--color-danger)]">{stepsIncorrect}</p>
+                </div>
+              </div>
+              {stepsReviews > 0 && (
+                <p className="mt-3 text-xs text-[var(--color-text-subtle)]">
+                  Precisão: <span className="font-medium text-[var(--color-text)]">{stepsAccuracy}%</span> dos exercícios concluídos corretamente
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        </motion.div>
+      )}
 
       {/* Per-deck stats */}
       {decks.length > 0 && (

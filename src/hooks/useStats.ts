@@ -1,7 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '@/storage/db'
 import type { ReviewRecord } from '@/models/ReviewRecord'
-import type { Card } from '@/models/Card'
+import type { Card, StepsCard } from '@/models/Card'
 import { getDayStreak, isSameDay, startOfDay } from '@/utils/dateUtils'
 
 export function useGlobalStats() {
@@ -45,4 +45,24 @@ export function useDeckStats(deckId: string) {
       : 0
 
   return { total, reviewed, progress, retention }
+}
+
+export function useStepsStats() {
+  const stepsCards = (useLiveQuery(
+    () => db.cards.where('type').equals('steps').toArray(),
+    [],
+  ) ?? []) as StepsCard[]
+
+  const allReviews: ReviewRecord[] = useLiveQuery(() => db.reviews.orderBy('reviewedAt').toArray(), []) ?? []
+
+  const stepsCardIds = new Set(stepsCards.map((c) => c.id))
+  const stepsReviews = allReviews.filter((r) => stepsCardIds.has(r.cardId))
+
+  const total = stepsCards.length
+  const totalReviews = stepsReviews.length
+  const correct = stepsReviews.filter((r) => r.rating >= 3).length
+  const incorrect = stepsReviews.filter((r) => r.rating < 3).length
+  const accuracy = totalReviews > 0 ? Math.round((correct / totalReviews) * 100) : 0
+
+  return { total, totalReviews, correct, incorrect, accuracy }
 }

@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Maximize2, Minimize2, CheckCircle2, RotateCcw, Flame } from 'lucide-react'
@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { ClozeText } from '@/components/study/ClozeText'
 import { RatingButtons } from '@/components/study/RatingButtons'
+import { StepsExerciseCard } from '@/components/study/StepsExerciseCard'
 import { useStudySession } from '@/hooks/useStudySession'
 import { useKeyboard } from '@/hooks/useKeyboard'
 import { getDeckById } from '@/storage/deckStore'
@@ -22,6 +23,7 @@ import { cn } from '@/utils/cn'
 import { useGlobalStats } from '@/hooks/useStats'
 import type { Deck } from '@/models/Deck'
 import type { Rating } from '@/models/Card'
+import { isClozeCard, isStepsCard } from '@/models/Card'
 import { calculateRetention } from '@/study/session'
 
 const CONFETTI = Array.from({ length: 10 }, (_, i) => ({
@@ -98,12 +100,14 @@ export function StudyPage() {
     }
   }
 
+  const isCurrent = currentCard && isClozeCard(currentCard)
+
   useKeyboard({
-    ' ': () => { if (!revealed && !done) showAnswer() },
-    '1': () => { if (revealed) handleRate(1) },
-    '2': () => { if (revealed) handleRate(2) },
-    '3': () => { if (revealed) handleRate(3) },
-    '4': () => { if (revealed) handleRate(4) },
+    ' ': () => { if (!revealed && !done && isCurrent) showAnswer() },
+    '1': () => { if (revealed && isCurrent) handleRate(1) },
+    '2': () => { if (revealed && isCurrent) handleRate(2) },
+    '3': () => { if (revealed && isCurrent) handleRate(3) },
+    '4': () => { if (revealed && isCurrent) handleRate(4) },
     Escape: handleExit,
     f: () => setFullscreen((v) => !v),
     F: () => setFullscreen((v) => !v),
@@ -205,45 +209,55 @@ export function StudyPage() {
         </div>
 
         {/* Card */}
-        <div className="flex flex-1 items-center justify-center p-8">
+        <div className="flex flex-1 items-center justify-center p-6 overflow-y-auto">
           <div className="w-full max-w-2xl">
             <AnimatePresence mode="wait">
               {currentCard && (
                 <motion.div
-                  key={currentCard.id + revealed}
+                  key={currentCard.id}
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -12 }}
                   transition={{ duration: 0.2 }}
-                  className="rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)] p-10 shadow-[0_1px_8px_rgba(0,0,0,0.35)]"
+                  className="rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)] p-8 shadow-[0_1px_8px_rgba(0,0,0,0.35)]"
                 >
-                  <ClozeText
-                    rawText={currentCard.rawText}
-                    clozeIndex={currentCard.clozeIndex}
-                    revealed={revealed}
-                  />
+                  {isClozeCard(currentCard) ? (
+                    <>
+                      <ClozeText
+                        rawText={currentCard.rawText}
+                        clozeIndex={currentCard.clozeIndex}
+                        revealed={revealed}
+                      />
+                      <div className="mt-6">
+                        {!revealed ? (
+                          <Button size="lg" className="w-full" onClick={showAnswer}>
+                            Mostrar resposta
+                            <kbd className="ml-2 rounded border border-white/20 bg-white/10 px-1.5 py-0.5 text-xs">
+                              Espaço
+                            </kbd>
+                          </Button>
+                        ) : (
+                          <RatingButtons onRate={handleRate} />
+                        )}
+                      </div>
+                      <p className="mt-4 text-center text-xs text-[var(--color-text-subtle)]">
+                        {revealed ? '1–4 para avaliar • Esc para sair' : 'Espaço para revelar • Esc para sair'}
+                      </p>
+                    </>
+                  ) : isStepsCard(currentCard) ? (
+                    <>
+                      <StepsExerciseCard
+                        card={currentCard}
+                        onComplete={(correct) => handleRate(correct ? 3 : 1)}
+                      />
+                      <p className="mt-4 text-center text-xs text-[var(--color-text-subtle)]">
+                        Esc para sair
+                      </p>
+                    </>
+                  ) : null}
                 </motion.div>
               )}
             </AnimatePresence>
-
-            {/* Actions */}
-            <div className="mt-6">
-              {!revealed ? (
-                <Button size="lg" className="w-full" onClick={showAnswer}>
-                  Mostrar resposta
-                  <kbd className="ml-2 rounded border border-white/20 bg-white/10 px-1.5 py-0.5 text-xs">
-                    Espaço
-                  </kbd>
-                </Button>
-              ) : (
-                <RatingButtons onRate={handleRate} />
-              )}
-            </div>
-
-            {/* Keyboard hint */}
-            <p className="mt-4 text-center text-xs text-[var(--color-text-subtle)]">
-              {revealed ? '1–4 para avaliar • Esc para sair' : 'Espaço para revelar • Esc para sair'}
-            </p>
           </div>
         </div>
       </div>

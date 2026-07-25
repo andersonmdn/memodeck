@@ -1,4 +1,4 @@
-import type { Card } from '@/models/Card'
+import type { ClozeCard } from '@/models/Card'
 import { createNewCard } from '@/study/scheduler'
 
 const CLOZE_REGEX = /\{\{c(\d+)::([^}]+)\}\}/g
@@ -24,15 +24,16 @@ export function extractClozes(text: string): ClozeMatch[] {
   return matches.sort((a, b) => a.index - b.index)
 }
 
-export function buildCards(deckId: string, rawText: string): Card[] {
+export function buildCards(deckId: string, rawText: string): ClozeCard[] {
   const clozes = extractClozes(rawText)
   return clozes.map((cloze) => ({
+    ...createNewCard(),
     id: crypto.randomUUID(),
     deckId,
+    type: 'cloze' as const,
     clozeIndex: cloze.index,
     rawText,
     answer: cloze.answer,
-    ...createNewCard(),
   }))
 }
 

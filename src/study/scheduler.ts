@@ -3,6 +3,14 @@ import type { Card, CardState, Rating } from '@/models/Card'
 const MIN_EASE = 1.3
 const DEFAULT_EASE = 2.5
 
+export type SRSFields = {
+  state: CardState
+  dueDate: Date
+  interval: number
+  easeFactor: number
+  reviewCount: number
+}
+
 function addDays(days: number): Date {
   const d = new Date()
   d.setDate(d.getDate() + days)
@@ -10,7 +18,7 @@ function addDays(days: number): Date {
   return d
 }
 
-export function scheduleNext(card: Card, rating: Rating): Partial<Card> {
+export function scheduleNext(card: Card, rating: Rating): Omit<SRSFields, 'reviewCount'> {
   let { interval, easeFactor } = card
 
   if (rating === 1) {
@@ -36,12 +44,13 @@ export function scheduleNext(card: Card, rating: Rating): Partial<Card> {
   return { interval, easeFactor, state, dueDate: addDays(interval) }
 }
 
-export function createNewCard(overrides: Partial<Card> = {}): Pick<Card, 'state' | 'dueDate' | 'interval' | 'easeFactor'> {
+export function createNewCard(overrides: Partial<SRSFields> = {}): SRSFields {
   return {
     state: 'new',
     dueDate: new Date(),
     interval: 1,
     easeFactor: DEFAULT_EASE,
+    reviewCount: 0,
     ...overrides,
   }
 }

@@ -31,7 +31,10 @@ export async function recordReview(
     reviewedAt: new Date(),
     timeTaken,
   }
-  const updatedCard = scheduleNext(card, rating)
+  const updatedCard = {
+    ...scheduleNext(card, rating),
+    reviewCount: (card.reviewCount ?? 0) + 1,
+  }
 
   await db.transaction('rw', db.cards, db.reviews, db.decks, async () => {
     await db.cards.update(card.id, updatedCard)

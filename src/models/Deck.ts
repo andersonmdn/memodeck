@@ -1,3 +1,5 @@
+export type ContentType = 'cloze' | 'steps'
+
 export interface Deck {
   id: string
   title: string
@@ -8,4 +10,5 @@ export interface Deck {
   lastStudied?: Date
   isFavorite: boolean
   color?: string
+  contentTypes: ContentType[]
 }
