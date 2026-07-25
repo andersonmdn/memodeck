@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { motion } from 'framer-motion'
 import {
@@ -64,13 +64,13 @@ export function DeckCard({ deck }: DeckCardProps) {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.2 }}
       >
-        <Card className="group hover:border-[--color-border] transition-all duration-200 hover:shadow-lg hover:shadow-black/20">
+        <Card className="group hover:-translate-y-px hover:border-[var(--color-border)] transition-all duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.5)]">
           <CardContent className="p-5">
             <div className="flex items-start justify-between gap-2">
               <div className="min-w-0 flex-1">
-                <h3 className="truncate font-semibold text-[--color-text]">{deck.title}</h3>
+                <h3 className="truncate font-semibold text-[var(--color-text)]">{deck.title}</h3>
                 {deck.description && (
-                  <p className="mt-0.5 text-xs text-[--color-text-subtle] line-clamp-1">
+                  <p className="mt-0.5 text-xs text-[var(--color-text-subtle)] line-clamp-1">
                     {deck.description}
                   </p>
                 )}
@@ -105,7 +105,7 @@ export function DeckCard({ deck }: DeckCardProps) {
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    className="text-[--color-danger] focus:text-[--color-danger] focus:bg-[--color-danger]/10"
+                    className="text-[var(--color-danger)] focus:text-[var(--color-danger)] focus:bg-[var(--color-danger)]/10"
                     onClick={() => setDeleteOpen(true)}
                   >
                     <Trash2 className="h-4 w-4" /> Excluir
@@ -130,7 +130,7 @@ export function DeckCard({ deck }: DeckCardProps) {
 
             {/* Progress */}
             <div className="mt-4">
-              <div className="mb-1.5 flex items-center justify-between text-xs text-[--color-text-subtle]">
+              <div className="mb-1.5 flex items-center justify-between text-xs text-[var(--color-text-subtle)]">
                 <span className="flex items-center gap-1.5">
                   <BookOpen className="h-3 w-3" />
                   {total} cartões
@@ -142,7 +142,7 @@ export function DeckCard({ deck }: DeckCardProps) {
 
             {/* Footer */}
             <div className="mt-4 flex items-center justify-between">
-              <span className="text-xs text-[--color-text-subtle]">
+              <span className="text-xs text-[var(--color-text-subtle)]">
                 {deck.lastStudied ? `Estudado ${formatRelative(deck.lastStudied)}` : 'Nunca estudado'}
               </span>
               <Button size="sm" onClick={() => navigate(`/study/${deck.id}`)}>
@@ -167,7 +167,7 @@ export function DeckCard({ deck }: DeckCardProps) {
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
             <AlertDialogAction
-              className="bg-[--color-danger] hover:bg-[--color-danger]/80 text-white"
+              className="bg-[var(--color-danger)] hover:bg-[var(--color-danger)]/80 text-white"
               onClick={() => removeDeck(deck.id)}
             >
               Excluir

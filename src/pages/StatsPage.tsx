@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+﻿import { motion } from 'framer-motion'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts'
 import { Flame, TrendingUp, BookOpen, BarChart2 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -10,14 +10,14 @@ import type { Deck } from '@/models/Deck'
 function DeckStatRow({ deck }: { deck: Deck }) {
   const { total, reviewed, progress, retention } = useDeckStats(deck.id)
   return (
-    <div className="flex items-center gap-4 py-3 border-b border-[--color-border-subtle] last:border-0">
+    <div className="flex items-center gap-4 py-3 border-b border-[var(--color-border-subtle)] last:border-0">
       <div className="flex-1 min-w-0">
-        <p className="truncate text-sm font-medium text-[--color-text]">{deck.title}</p>
-        <p className="text-xs text-[--color-text-subtle]">{reviewed}/{total} revisados</p>
+        <p className="truncate text-sm font-medium text-[var(--color-text)]">{deck.title}</p>
+        <p className="text-xs text-[var(--color-text-subtle)]">{reviewed}/{total} revisados</p>
       </div>
       <div className="flex items-center gap-4 shrink-0 text-xs">
-        <span className="text-[--color-accent] font-medium">{progress}%</span>
-        <span className="text-[--color-success] font-medium">{retention}% ret.</span>
+        <span className="text-[var(--color-accent)] font-medium">{progress}%</span>
+        <span className="text-[var(--color-success)] font-medium">{retention}% ret.</span>
       </div>
     </div>
   )
@@ -30,9 +30,9 @@ interface TooltipPayload {
 function CustomTooltip({ active, payload, label }: { active?: boolean; payload?: TooltipPayload[]; label?: string }) {
   if (!active || !payload?.length) return null
   return (
-    <div className="rounded-lg border border-[--color-border] bg-[--color-surface] px-3 py-2 text-xs shadow-lg">
-      <p className="text-[--color-text-muted]">{label}</p>
-      <p className="font-semibold text-[--color-text]">{payload[0].value} revisões</p>
+    <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-xs shadow-lg">
+      <p className="text-[var(--color-text-muted)]">{label}</p>
+      <p className="font-semibold text-[var(--color-text)]">{payload[0].value} revisões</p>
     </div>
   )
 }
@@ -46,8 +46,8 @@ export function StatsPage() {
   return (
     <div className="p-8 max-w-5xl mx-auto">
       <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-        <h1 className="text-2xl font-bold text-[--color-text]">Estatísticas</h1>
-        <p className="mt-1 text-sm text-[--color-text-muted]">Seu progresso de estudo</p>
+        <h1 className="text-2xl font-bold text-[var(--color-text)]">Estatísticas</h1>
+        <p className="mt-1 text-sm text-[var(--color-text-muted)]">Seu progresso de estudo</p>
       </motion.div>
 
       {/* Summary cards */}
@@ -60,14 +60,14 @@ export function StatsPage() {
         {[
           { icon: Flame, label: 'Sequência', value: `${streak}d`, color: 'text-orange-400', iconBg: 'bg-orange-500/10' },
           { icon: BookOpen, label: 'Hoje', value: reviewedToday, color: 'text-blue-400', iconBg: 'bg-blue-500/10' },
-          { icon: TrendingUp, label: 'Total', value: totalReviewed, color: 'text-[--color-accent]', iconBg: 'bg-[--color-accent]/15' },
-          { icon: BarChart2, label: 'Retenção', value: totalReviewed === 0 ? '–' : `${retention}%`, color: 'text-[--color-success]', iconBg: 'bg-[--color-success]/10' },
+          { icon: TrendingUp, label: 'Total', value: totalReviewed, color: 'text-[var(--color-accent)]', iconBg: 'bg-[var(--color-accent)]/15' },
+          { icon: BarChart2, label: 'Retenção', value: totalReviewed === 0 ? '–' : `${retention}%`, color: 'text-[var(--color-success)]', iconBg: 'bg-[var(--color-success)]/10' },
         ].map(({ icon: Icon, label, value, color, iconBg }) => (
           <Card key={label}>
             <CardContent className="p-5">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-[--color-text-subtle] uppercase tracking-wider">{label}</p>
+                  <p className="text-xs text-[var(--color-text-subtle)] uppercase tracking-wider">{label}</p>
                   <p className={`mt-1 text-2xl font-bold ${color}`}>{value}</p>
                 </div>
                 <div className={`rounded-lg ${iconBg} p-2`}>
@@ -92,7 +92,7 @@ export function StatsPage() {
           </CardHeader>
           <CardContent className="pb-6">
             {totalReviewed === 0 ? (
-              <div className="flex h-40 items-center justify-center text-sm text-[--color-text-subtle]">
+              <div className="flex h-40 items-center justify-center text-sm text-[var(--color-text-subtle)]">
                 Nenhuma revisão ainda
               </div>
             ) : (

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+﻿import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { Search, Plus, Heart, Library } from 'lucide-react'
 import { Input } from '@/components/ui/input'
@@ -51,8 +51,8 @@ export function LibraryPage() {
         className="mb-6 flex items-start justify-between gap-4"
       >
         <div>
-          <h1 className="text-2xl font-bold text-[--color-text]">Biblioteca</h1>
-          <p className="mt-1 text-sm text-[--color-text-muted]">
+          <h1 className="text-2xl font-bold text-[var(--color-text)]">Biblioteca</h1>
+          <p className="mt-1 text-sm text-[var(--color-text-muted)]">
             {decks.length} {decks.length === 1 ? 'deck' : 'decks'} importados
           </p>
         </div>
@@ -69,7 +69,7 @@ export function LibraryPage() {
         className="mb-6 space-y-3"
       >
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[--color-text-subtle]" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-text-subtle)]" />
           <Input
             placeholder="Buscar decks ou tags..."
             value={search}
@@ -86,7 +86,7 @@ export function LibraryPage() {
                   variant={selectedTags.includes(tag) ? 'default' : 'secondary'}
                   className={cn(
                     'cursor-pointer transition-colors',
-                    selectedTags.includes(tag) && 'ring-1 ring-[--color-accent]',
+                    selectedTags.includes(tag) && 'ring-1 ring-[var(--color-accent)]',
                   )}
                 >
                   {tag}
@@ -96,7 +96,7 @@ export function LibraryPage() {
             {selectedTags.length > 0 && (
               <button
                 onClick={() => setSelectedTags([])}
-                className="text-xs text-[--color-text-subtle] hover:text-[--color-text] transition-colors"
+                className="text-xs text-[var(--color-text-subtle)] hover:text-[var(--color-text)] transition-colors"
               >
                 Limpar filtros
               </button>
@@ -117,7 +117,7 @@ export function LibraryPage() {
             <div className="flex h-6 w-6 items-center justify-center rounded-md bg-rose-500/15">
               <Heart className="h-3.5 w-3.5 text-rose-400" />
             </div>
-            <h2 className="text-sm font-semibold text-[--color-text]">Favoritos</h2>
+            <h2 className="text-sm font-semibold text-[var(--color-text)]">Favoritos</h2>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {favorites.map((deck) => (
@@ -136,8 +136,8 @@ export function LibraryPage() {
         >
           {favorites.length > 0 && (
             <div className="mb-3 flex items-center gap-2">
-              <Library className="h-4 w-4 text-[--color-text-subtle]" />
-              <h2 className="text-sm font-semibold text-[--color-text]">Todos os decks</h2>
+              <Library className="h-4 w-4 text-[var(--color-text-subtle)]" />
+              <h2 className="text-sm font-semibold text-[var(--color-text)]">Todos os decks</h2>
             </div>
           )}
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -153,13 +153,13 @@ export function LibraryPage() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[--color-border] py-20 text-center"
+          className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[var(--color-border)] py-20 text-center"
         >
-          <Library className="mb-3 h-10 w-10 text-[--color-text-subtle]" />
+          <Library className="mb-3 h-10 w-10 text-[var(--color-text-subtle)]" />
           {decks.length === 0 ? (
             <>
-              <p className="text-sm font-medium text-[--color-text]">Biblioteca vazia</p>
-              <p className="mt-1 text-xs text-[--color-text-subtle]">
+              <p className="text-sm font-medium text-[var(--color-text)]">Biblioteca vazia</p>
+              <p className="mt-1 text-xs text-[var(--color-text-subtle)]">
                 Importe seu primeiro deck para começar
               </p>
               <Button className="mt-4" size="sm" onClick={() => setImportOpen(true)}>
@@ -168,8 +168,8 @@ export function LibraryPage() {
             </>
           ) : (
             <>
-              <p className="text-sm font-medium text-[--color-text]">Nenhum resultado</p>
-              <p className="mt-1 text-xs text-[--color-text-subtle]">
+              <p className="text-sm font-medium text-[var(--color-text)]">Nenhum resultado</p>
+              <p className="mt-1 text-xs text-[var(--color-text-subtle)]">
                 Tente outros termos ou remova os filtros
               </p>
             </>

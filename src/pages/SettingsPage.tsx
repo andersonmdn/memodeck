@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+﻿import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Download, Upload, Trash2, CheckCircle, AlertCircle, Shield } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -53,8 +53,8 @@ export function SettingsPage() {
   return (
     <div className="p-8 max-w-2xl mx-auto">
       <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-        <h1 className="text-2xl font-bold text-[--color-text]">Configurações</h1>
-        <p className="mt-1 text-sm text-[--color-text-muted]">Gerencie seus dados e preferências</p>
+        <h1 className="text-2xl font-bold text-[var(--color-text)]">Configurações</h1>
+        <p className="mt-1 text-sm text-[var(--color-text-muted)]">Gerencie seus dados e preferências</p>
       </motion.div>
 
       {/* Feedback */}
@@ -64,8 +64,8 @@ export function SettingsPage() {
           animate={{ opacity: 1, y: 0 }}
           className={`mb-4 flex items-center gap-2 rounded-lg border p-3 text-sm ${
             feedback.type === 'success'
-              ? 'border-[--color-success]/30 bg-[--color-success]/10 text-[--color-success]'
-              : 'border-[--color-danger]/30 bg-[--color-danger]/10 text-[--color-danger]'
+              ? 'border-[var(--color-success)]/30 bg-[var(--color-success)]/10 text-[var(--color-success)]'
+              : 'border-[var(--color-danger)]/30 bg-[var(--color-danger)]/10 text-[var(--color-danger)]'
           }`}
         >
           {feedback.type === 'success' ? (
@@ -82,8 +82,8 @@ export function SettingsPage() {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[--color-success]/15">
-                <Shield className="h-3.5 w-3.5 text-[--color-success]" />
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[var(--color-success)]/15">
+                <Shield className="h-3.5 w-3.5 text-[var(--color-success)]" />
               </div>
               <CardTitle className="text-sm">Privacidade total</CardTitle>
             </div>
@@ -155,9 +155,9 @@ export function SettingsPage() {
         </AlertDialog>
 
         {/* Reset */}
-        <Card className="border-[--color-danger]/20">
+        <Card className="border-[var(--color-danger)]/20">
           <CardHeader>
-            <CardTitle className="text-sm text-[--color-danger]">Zona de perigo</CardTitle>
+            <CardTitle className="text-sm text-[var(--color-danger)]">Zona de perigo</CardTitle>
             <CardDescription>
               Estas ações são irreversíveis. Faça um backup antes de prosseguir.
             </CardDescription>
@@ -180,7 +180,7 @@ export function SettingsPage() {
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancelar</AlertDialogCancel>
                   <AlertDialogAction
-                    className="bg-[--color-danger] hover:bg-[--color-danger]/80 text-white"
+                    className="bg-[var(--color-danger)] hover:bg-[var(--color-danger)]/80 text-white"
                     onClick={handleReset}
                   >
                     Sim, apagar tudo

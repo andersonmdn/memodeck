@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react'
+﻿import { useCallback, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Upload, FileText, CheckCircle, AlertCircle, X } from 'lucide-react'
 import { cn } from '@/utils/cn'
@@ -84,31 +84,31 @@ export function DeckImport({ onImported }: { onImported?: () => void }) {
         className={cn(
           'relative flex cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed p-10 transition-all duration-200',
           dragOver
-            ? 'border-[--color-accent] bg-[--color-accent]/8'
-            : 'border-[--color-border] hover:border-[--color-accent]/40 hover:bg-[--color-accent]/5',
+            ? 'border-[var(--color-accent)] bg-[var(--color-accent)]/8'
+            : 'border-[var(--color-border)] hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-accent)]/5',
         )}
       >
         <div className={cn(
           'flex h-12 w-12 items-center justify-center rounded-xl transition-colors',
-          dragOver ? 'bg-[--color-accent]/20' : 'bg-[--color-surface-2]',
+          dragOver ? 'bg-[var(--color-accent)]/20' : 'bg-[var(--color-surface-2)]',
         )}>
           {state.status === 'loading' ? (
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
             >
-              <FileText className="h-6 w-6 text-[--color-accent]" />
+              <FileText className="h-6 w-6 text-[var(--color-accent)]" />
             </motion.div>
           ) : (
-            <Upload className={cn('h-6 w-6', dragOver ? 'text-[--color-accent]' : 'text-[--color-text-muted]')} />
+            <Upload className={cn('h-6 w-6', dragOver ? 'text-[var(--color-accent)]' : 'text-[var(--color-text-muted)]')} />
           )}
         </div>
 
         <div className="text-center">
-          <p className="text-sm font-medium text-[--color-text]">
+          <p className="text-sm font-medium text-[var(--color-text)]">
             {dragOver ? 'Solte o arquivo aqui' : 'Arraste um arquivo .deck.md'}
           </p>
-          <p className="mt-0.5 text-xs text-[--color-text-subtle]">
+          <p className="mt-0.5 text-xs text-[var(--color-text-subtle)]">
             ou clique para selecionar
           </p>
         </div>
@@ -123,25 +123,25 @@ export function DeckImport({ onImported }: { onImported?: () => void }) {
             className={cn(
               'mt-3 flex items-start gap-3 rounded-lg border p-3',
               state.status === 'success'
-                ? 'border-[--color-success]/30 bg-[--color-success]/10'
+                ? 'border-[var(--color-success)]/30 bg-[var(--color-success)]/10'
                 : state.status === 'error'
-                  ? 'border-[--color-danger]/30 bg-[--color-danger]/10'
-                  : 'border-[--color-border] bg-[--color-surface-2]',
+                  ? 'border-[var(--color-danger)]/30 bg-[var(--color-danger)]/10'
+                  : 'border-[var(--color-border)] bg-[var(--color-surface-2)]',
             )}
           >
-            {state.status === 'success' && <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-[--color-success]" />}
-            {state.status === 'error' && <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-[--color-danger]" />}
+            {state.status === 'success' && <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-success)]" />}
+            {state.status === 'error' && <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-danger)]" />}
             <div className="min-w-0 flex-1 text-sm">
               <p className={cn(
                 'font-medium',
-                state.status === 'success' ? 'text-[--color-success]' : 'text-[--color-danger]',
+                state.status === 'success' ? 'text-[var(--color-success)]' : 'text-[var(--color-danger)]',
               )}>
                 {state.message}
               </p>
               {state.warnings && state.warnings.length > 0 && (
                 <ul className="mt-1 space-y-0.5">
                   {state.warnings.map((w, i) => (
-                    <li key={i} className="text-xs text-[--color-text-muted]">• {w}</li>
+                    <li key={i} className="text-xs text-[var(--color-text-muted)]">• {w}</li>
                   ))}
                 </ul>
               )}

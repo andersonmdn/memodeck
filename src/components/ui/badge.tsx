@@ -1,4 +1,4 @@
-import * as React from 'react'
+﻿import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/utils/cn'
 
@@ -7,11 +7,11 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-[--color-accent]/20 text-[--color-accent] border border-[--color-accent]/30',
-        secondary: 'bg-[--color-surface-2] text-[--color-text-muted] border border-[--color-border]',
-        success: 'bg-[--color-success]/20 text-[--color-success] border border-[--color-success]/30',
-        warning: 'bg-[--color-warning]/20 text-[--color-warning] border border-[--color-warning]/30',
-        danger: 'bg-[--color-danger]/20 text-[--color-danger] border border-[--color-danger]/30',
+        default: 'bg-[var(--color-accent)]/15 text-[var(--color-accent)] border border-[var(--color-accent)]/30',
+        secondary: 'bg-[var(--color-surface-2)] text-[var(--color-text-muted)] border border-[var(--color-border)]',
+        success: 'bg-[var(--color-success)]/20 text-[var(--color-success)] border border-[var(--color-success)]/30',
+        warning: 'bg-[var(--color-warning)]/20 text-[var(--color-warning)] border border-[var(--color-warning)]/30',
+        danger: 'bg-[var(--color-danger)]/20 text-[var(--color-danger)] border border-[var(--color-danger)]/30',
       },
     },
     defaultVariants: { variant: 'default' },

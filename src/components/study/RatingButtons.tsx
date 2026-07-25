@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+﻿import { motion } from 'framer-motion'
 import type { Rating } from '@/models/Card'
 
 const RATINGS: { value: Rating; label: string; description: string; color: string; key: string }[] = [
@@ -24,7 +24,7 @@ export function RatingButtons({ onRate }: RatingButtonsProps) {
         <button
           key={value}
           onClick={() => onRate(value)}
-          className={`flex flex-col items-center gap-1.5 rounded-lg border p-3 text-center transition-all duration-150 cursor-pointer active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[--color-background] ${color}`}
+          className={`flex flex-col items-center gap-1.5 rounded-lg border p-3 text-center transition-all duration-150 cursor-pointer active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)] ${color}`}
         >
           <span className="text-sm font-semibold leading-tight">{label}</span>
           <span className="text-xs opacity-70 leading-tight">{description}</span>

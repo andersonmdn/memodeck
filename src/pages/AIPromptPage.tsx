@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import { motion } from 'framer-motion'
 import { Bot, Copy, CheckCircle, Info, Sparkles, Library } from 'lucide-react'
@@ -147,12 +147,12 @@ export function AIPromptPage() {
     <div className="p-8 max-w-2xl mx-auto">
       <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
         <div className="flex items-center gap-2.5 mb-1">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[--color-accent]/15">
-            <Bot className="h-5 w-5 text-[--color-accent]" />
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--color-accent)]/15">
+            <Bot className="h-5 w-5 text-[var(--color-accent)]" />
           </div>
-          <h1 className="text-2xl font-bold text-[--color-text]">Criar com IA</h1>
+          <h1 className="text-2xl font-bold text-[var(--color-text)]">Criar com IA</h1>
         </div>
-        <p className="text-sm text-[--color-text-muted]">
+        <p className="text-sm text-[var(--color-text-muted)]">
           Copie o prompt, cole em qualquer IA com o conteúdo que quer estudar, salve o resultado e importe na Biblioteca.
         </p>
       </motion.div>
@@ -162,8 +162,8 @@ export function AIPromptPage() {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[--color-accent]/15">
-                <Info className="h-3.5 w-3.5 text-[--color-accent]" />
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[var(--color-accent)]/15">
+                <Info className="h-3.5 w-3.5 text-[var(--color-accent)]" />
               </div>
               <CardTitle className="text-sm">Como usar</CardTitle>
             </div>
@@ -172,7 +172,7 @@ export function AIPromptPage() {
                 <li>Copie o prompt abaixo</li>
                 <li>Cole em qualquer IA (ChatGPT, Claude, Gemini…)</li>
                 <li>Adicione a documentação ou texto que deseja transformar em cartões</li>
-                <li>Salve o resultado como <code className="text-xs bg-[--color-surface-2] px-1 py-0.5 rounded">nome.deck.md</code></li>
+                <li>Salve o resultado como <code className="text-xs bg-[var(--color-surface-2)] px-1 py-0.5 rounded">nome.deck.md</code></li>
                 <li>Importe o arquivo na Biblioteca</li>
               </ol>
             </CardDescription>
@@ -196,7 +196,7 @@ export function AIPromptPage() {
                     <motion.span
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      className="inline-flex items-center gap-1 rounded-full bg-[--color-accent]/15 px-2 py-0.5 text-[10px] font-medium text-[--color-accent]"
+                      className="inline-flex items-center gap-1 rounded-full bg-[var(--color-accent)]/15 px-2 py-0.5 text-[10px] font-medium text-[var(--color-accent)]"
                     >
                       <Sparkles className="h-2.5 w-2.5" />
                       Atualizado
@@ -208,8 +208,8 @@ export function AIPromptPage() {
               <Button variant="secondary" size="sm" onClick={handleCopy}>
                 {copied ? (
                   <>
-                    <CheckCircle className="h-4 w-4 text-[--color-success]" />
-                    <span className="text-[--color-success]">Copiado!</span>
+                    <CheckCircle className="h-4 w-4 text-[var(--color-success)]" />
+                    <span className="text-[var(--color-success)]">Copiado!</span>
                   </>
                 ) : (
                   <>
@@ -224,7 +224,7 @@ export function AIPromptPage() {
             <textarea
               readOnly
               value={AI_PROMPT}
-              className="w-full h-80 resize-none rounded-md border border-[--color-border-subtle] bg-[--color-background] p-3 font-mono text-xs text-[--color-text-muted] focus:outline-none"
+              className="w-full h-80 resize-none rounded-md border border-[var(--color-border-subtle)] bg-[var(--color-background)] p-3 font-mono text-xs text-[var(--color-text-muted)] focus:outline-none"
             />
           </CardContent>
         </Card>

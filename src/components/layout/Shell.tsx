@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+﻿import { useEffect, useRef } from 'react'
 import { Outlet, useLocation } from 'react-router'
 import { Sidebar } from './Sidebar'
 
@@ -11,7 +11,7 @@ export function Shell() {
   }, [pathname])
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[--color-background]">
+    <div className="flex h-screen overflow-hidden bg-[var(--color-background)]">
       <Sidebar />
       <main ref={mainRef} className="flex-1 overflow-y-auto">
         <Outlet />

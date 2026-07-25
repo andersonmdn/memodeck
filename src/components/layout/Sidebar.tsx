@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { NavLink } from 'react-router'
 import { LayoutDashboard, Library, BarChart2, Settings, HardDrive, Layers, Sparkles } from 'lucide-react'
 import { cn } from '@/utils/cn'
@@ -25,13 +25,13 @@ export function Sidebar() {
   )
 
   return (
-    <aside className="flex h-screen w-56 flex-col border-r border-[--color-border-subtle] bg-[--color-surface] px-3 py-4">
+    <aside className="flex h-screen w-56 flex-col border-r border-[var(--color-border-subtle)] bg-[var(--color-sidebar)] px-3 py-4">
       {/* Logo */}
       <div className="mb-6 flex items-center gap-2.5 px-2">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[--color-accent] shadow-lg shadow-indigo-500/30">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-accent)] shadow-sm">
           <Layers className="h-4 w-4 text-white" />
         </div>
-        <span className="text-base font-semibold tracking-tight text-[--color-text]">
+        <span className="text-base font-semibold tracking-tight text-[var(--color-text)]">
           MemoDeck
         </span>
       </div>
@@ -51,17 +51,17 @@ export function Sidebar() {
             }}
             className={({ isActive }) =>
               cn(
-                'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-all duration-150',
                 isActive
-                  ? 'bg-[--color-accent]/15 text-[--color-accent]'
-                  : 'text-[--color-text-muted] hover:bg-[--color-surface-2] hover:text-[--color-text]',
+                  ? 'bg-[var(--color-accent)]/12 text-[var(--color-accent)]'
+                  : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-text)]',
               )
             }
           >
             <Icon className="h-4 w-4 shrink-0" />
             <span className="flex-1">{label}</span>
             {newFeature && !aiBadgeSeen && (
-              <span className="inline-flex items-center rounded-full bg-[--color-accent]/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-[--color-accent]">
+              <span className="inline-flex items-center rounded-full bg-[var(--color-accent)]/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">
                 Novo
               </span>
             )}
@@ -70,9 +70,9 @@ export function Sidebar() {
       </nav>
 
       {/* Bottom hint */}
-      <div className="mt-4 rounded-lg border border-[--color-accent]/15 bg-[--color-accent]/5 p-3">
-        <div className="flex items-center gap-2 text-xs text-[--color-text-subtle]">
-          <HardDrive className="h-3.5 w-3.5 shrink-0 text-[--color-accent]/60" />
+      <div className="mt-4 rounded-lg border border-[var(--color-accent)]/15 bg-[var(--color-accent)]/5 p-3">
+        <div className="flex items-center gap-2 text-xs text-[var(--color-text-subtle)]">
+          <HardDrive className="h-3.5 w-3.5 shrink-0 text-[var(--color-accent)]/60" />
           <span>Dados salvos localmente</span>
         </div>
       </div>
