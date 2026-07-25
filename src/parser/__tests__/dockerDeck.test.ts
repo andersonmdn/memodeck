@@ -10,7 +10,7 @@ const raw = readFileSync(
 const lfContent = raw.replace(/\r\n/g, '\n')
 const crlfContent = lfContent.replace(/\n/g, '\r\n')
 
-const EXPECTED_CARDS = 28
+const EXPECTED_CARDS = 29
 
 describe('docker-containers.deck.md', () => {
   it('extrai frontmatter corretamente', () => {
